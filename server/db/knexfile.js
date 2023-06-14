@@ -1,22 +1,29 @@
-const path = require('path')
+// const path = require('path')
 
 module.exports = {
   development: {
-    client: 'sqlite3',
+    client: 'mysql2',
     connection: {
-      filename: path.join(__dirname, 'dev.sqlite3'),
+      host: 'localhost',
+      user: 'root',
+      password: 'test1234!',
+      database: 'test',
     },
     useNullAsDefault: true,
   },
 
   test: {
-    client: 'sqlite3',
+    client: 'mysql2',
     connection: {
-      filename: ':memory:',
+      host: 'localhost',
+      user: 'root',
+      password: 'test1234!',
+      database: 'test',
     },
     useNullAsDefault: true,
   },
 
+  // to be updated
   production: {
     client: 'postgresql',
     connection: process.env.DATABASE_URL,
