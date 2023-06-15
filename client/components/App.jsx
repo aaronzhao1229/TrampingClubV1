@@ -3,11 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchFruitsAsync } from '../slice/fruitSlice'
 import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
-// import Container from 'react-bootstrap/Container'
+import Container from 'react-bootstrap/Container'
 import { Outlet, Link } from 'react-router-dom'
-// import { Routes, Route } from 'react-router-dom'
-// import About from './About'
-// import Home from './Home'
+import NavigationBar from './NavigationBar'
 
 function App() {
   const fruits = useSelector((state) => state.fruits)
@@ -20,6 +18,7 @@ function App() {
   return (
     <>
       <div className="app">
+        <NavigationBar />
         <h1>Fullstack Boilerplate - with Fruits!</h1>
         <ListGroup as="ol" numbered>
           {fruits.fruits.map((fruit) => (
@@ -33,9 +32,9 @@ function App() {
           <Button>about</Button>
         </Link>
 
-        <div>
+        <Container>
           <Outlet />
-        </div>
+        </Container>
       </div>
     </>
   )
