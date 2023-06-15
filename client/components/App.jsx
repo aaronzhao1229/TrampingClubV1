@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchFruitsAsync } from '../slice/fruitSlice'
+import Button from 'react-bootstrap/Button'
+import ListGroup from 'react-bootstrap/ListGroup'
 
 function App() {
   const fruits = useSelector((state) => state.fruits)
-  console.log(fruits)
+
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchFruitsAsync())
@@ -14,11 +16,15 @@ function App() {
     <>
       <div className="app">
         <h1>Fullstack Boilerplate - with Fruits!</h1>
-        <ul>
+        <ListGroup as="ol" numbered>
           {fruits.fruits.map((fruit) => (
-            <li key={fruit}>{fruit}</li>
+            <ListGroup.Item as="li" key={fruit}>
+              {fruit}
+            </ListGroup.Item>
           ))}
-        </ul>
+        </ListGroup>
+
+        <Button variant="primary">Primary</Button>
       </div>
     </>
   )

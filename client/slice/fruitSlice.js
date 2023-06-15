@@ -29,7 +29,8 @@ export const fruitSlice = createSlice({
     })
     builder.addCase(fetchFruitsAsync.fulfilled, (state, action) => {
       state.fruitsLoaded = true
-      state.fruits.push(action.payload)
+      state.status = 'idle'
+      state.fruits = action.payload
     })
     builder.addCase(fetchFruitsAsync.rejected, (state, action) => {
       state.status = 'idle'

@@ -35,11 +35,19 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
+    "autoprefixer": "^10.4.14",
+    "bootstrap": "^5.3.0",
+    "css-loader": "^6.8.1",
     "express": "^4.17.2",
     "knex": "^2.1.0",
     "mysql2": "^3.3.5",
     "pg": "^8.7.1",
+    "postcss-loader": "^7.3.3",
+    "precss": "^4.0.0",
+    "react-bootstrap": "^2.7.4",
+    "sass-loader": "^13.3.2",
     "sqlite3": "^5.0.8",
+    "style-loader": "^3.3.3",
     "superagent": "7.1.1"
   },
   "devDependencies": {
