@@ -4,10 +4,10 @@ import { fetchFruitsAsync } from '../slice/fruitSlice'
 import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
 // import Container from 'react-bootstrap/Container'
-// import { Outlet } from 'react-router-dom'
-import { Routes, Route } from 'react-router-dom'
-import About from './About'
-import Home from './Home'
+import { Outlet, Link } from 'react-router-dom'
+// import { Routes, Route } from 'react-router-dom'
+// import About from './About'
+// import Home from './Home'
 
 function App() {
   const fruits = useSelector((state) => state.fruits)
@@ -29,13 +29,12 @@ function App() {
           ))}
         </ListGroup>
 
-        <Button variant="primary">Primary</Button>
+        <Link to="/about">
+          <Button>about</Button>
+        </Link>
 
         <div>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-          </Routes>
+          <Outlet />
         </div>
       </div>
     </>
