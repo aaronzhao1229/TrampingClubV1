@@ -7,7 +7,7 @@ import { fruitSlice } from './slice/fruitSlice'
 // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 // const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)))
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     fruits: fruitSlice.reducer,
   },
