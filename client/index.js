@@ -7,7 +7,7 @@ import store from './store'
 import { RouterProvider } from 'react-router-dom'
 import { router } from './router/Routes'
 
-import 'bootstrap/dist/css/bootstrap.min.css'
+// import 'bootstrap/dist/css/bootstrap.min.css'
 import './custom.scss'
 
 document.addEventListener('DOMContentLoaded', () => {

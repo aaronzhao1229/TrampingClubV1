@@ -1,5 +1,6 @@
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
 import React from 'react'
 
 export default function NavigationBar() {
@@ -12,9 +13,13 @@ export default function NavigationBar() {
             src="/img/logo.png"
             height="60"
             className="d-inline-block align-top"
-          />{' '}
-          React Bootstrap
+          />
         </Navbar.Brand>
+        <Nav className="me-auto">
+          <Nav.Link href="/">Home</Nav.Link>
+          <Nav.Link href="/about">About</Nav.Link>
+          <Nav.Link href="/fruits">Fruits</Nav.Link>
+        </Nav>
       </Container>
     </Navbar>
   )
