@@ -17,7 +17,7 @@ export default function Album() {
       }
     })
   }
-  console.log(albumNames)
+
   return (
     <ListGroup as="ol" numbered>
       {album.album.map((album) => (
