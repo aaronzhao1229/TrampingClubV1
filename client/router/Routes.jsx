@@ -4,6 +4,7 @@ import React from 'react'
 import About from '../components/About'
 import Fruits from '../components/Fruits'
 import Album from '../components/Album'
+import ContactUs from '../components/ContactUs'
 
 export const router = createBrowserRouter([
   {
@@ -13,6 +14,7 @@ export const router = createBrowserRouter([
       { path: 'about', element: <About /> },
       { path: 'album', element: <Album /> },
       { path: 'fruits', element: <Fruits /> },
+      { path: 'contactus', element: <ContactUs /> },
     ],
   },
 ])
