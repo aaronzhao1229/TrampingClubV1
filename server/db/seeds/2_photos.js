@@ -4,7 +4,7 @@
  */
 exports.seed = async function (knex) {
   // Deletes ALL existing entries
-  await knex('photos').del()
+
   await knex('photos').insert([
     {
       photoId: 1,
