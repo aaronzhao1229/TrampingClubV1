@@ -1,84 +1,112 @@
 import Form from 'react-bootstrap/Form'
-import React, { useState } from 'react'
+import React from 'react'
 import { Container } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
+import { useForm } from 'react-hook-form'
+import { contactUs } from '../apis/contactUsApi'
 
 export default function ContactUs() {
-  const [form, setForm] = useState({})
-  const [errors, setErrors] = useState({})
+  const initState = {
+    email: '',
+    name: '',
+    message: '',
+  }
 
-  function handleChange(field, value) {
-    setForm({ ...form, [field]: value })
-    // Check and see if errors exist, and remove them from the error object:
-    if (!errors[field])
-      setErrors({
-        ...errors,
-        [field]: null,
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isValid },
+  } = useForm({
+    mode: 'onTouched',
+    reValidateMode: 'onChange',
+    defaultValues: initState,
+  })
+
+  function handleApiErrors(errors) {
+    if (errors) {
+      errors.forEach((error) => {
+        if (error.includes('Name')) {
+          setError('name', { message: error })
+        } else if (error.includes('Email')) {
+          setError('email', { message: error })
+        } else if (error.includes('Message')) {
+          setError('message', { message: error })
+        }
       })
-  }
-
-  function findFormErrors() {
-    const { name, email } = form
-    const newErrors = {}
-    // name errors
-    if (!name || name === '') newErrors.name = 'Name is required'
-    // food errors
-    if (!email || email === '') newErrors.email = 'Email is required'
-    // rating errors
-    return newErrors
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault()
-    // get our new errors
-    const newErrors = findFormErrors()
-    // Conditional logic:
-    if (Object.keys(newErrors).length > 0) {
-      // We got errors!
-      setErrors(newErrors)
-    } else {
-      // No errors! Put any logic here for the form submission!
-      alert('Thank you for your feedback!')
     }
   }
 
+  const onSubmit = (values) => {
+    contactUs(values)
+      .then(() => console.log('we have sent an email'))
+      .catch((error) => handleApiErrors(error))
+  }
+
+  // useEffect(() => {
+  //   const subscription = watch((value, { name, type }) => {
+  //     console.log('>>', value, name, type)
+  //     // {1: '1', 2: '9'} '2' 'change'
+  //     console.log(errors)
+  //   })
+
+  //   return () => subscription.unsubscribe()
+  // }, [watch])
+
   return (
-    <Container>
-      <h3>Contact us</h3>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Your name (required)</Form.Label>
-          <Form.Control
-            type="text"
-            onChange={(e) => handleChange('name', e.target.value)}
-            isInvalid={!!errors.name}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.name}
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label>Email address (required)</Form.Label>
+    <Container className="my-4">
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
-            onChange={(e) => handleChange('email', e.target.value)}
-            placeholder="name@example.com"
-            isInvalid={!!errors.email}
+            placeholder="Your email"
+            {...register('email', {
+              required: 'Email is required',
+              pattern: {
+                value:
+                  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                message: 'Not a valid email address',
+              },
+            })}
           />
-          <Form.Control.Feedback type="invalid">
-            {errors.email}
-          </Form.Control.Feedback>
+          {errors.email && (
+            <Form.Text className="text-danger">
+              {errors.email.message}
+            </Form.Text>
+          )}
         </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+
+        <Form.Group className="mb-3" controlId="formBasicName">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Your name"
+            {...register('name', { required: 'Name is required' })}
+          />
+          {errors.name && (
+            <Form.Text className="text-danger">{errors.name.message}</Form.Text>
+          )}
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Message</Form.Label>
           <Form.Control
-            as="textarea"
-            rows={3}
-            onChange={(e) => handleChange('message', e.target.value)}
+            type="textarea"
+            placeholder="Message"
+            {...register('message', {
+              required: 'Message is required',
+            })}
           />
+          {errors.message && (
+            <Form.Text className="text-danger">
+              {errors.message.message}
+            </Form.Text>
+          )}
         </Form.Group>
-        <Button type="submit" style={{ marginTop: '2rem' }}>
-          Submit Form
+
+        <Button variant="primary" type="submit" disabled={!isValid}>
+          Submit
         </Button>
       </Form>
     </Container>
