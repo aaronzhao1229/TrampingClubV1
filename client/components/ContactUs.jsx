@@ -1,6 +1,6 @@
 import Form from 'react-bootstrap/Form'
 import React from 'react'
-import { Container } from 'react-bootstrap'
+import { Container, Spinner } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import { useForm } from 'react-hook-form'
 import { contactUs } from '../apis/contactUsApi'
@@ -19,7 +19,7 @@ export default function ContactUs() {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange',
@@ -41,7 +41,12 @@ export default function ContactUs() {
   }
 
   const onSubmit = (values) => {
-    contactUs(values)
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     resolve()
+    //   }, 2000)
+    // })
+    return contactUs(values)
       .then(() => {
         toast.success(
           'We have received your message and will contact you as soon as we can'
@@ -114,7 +119,17 @@ export default function ContactUs() {
         </Form.Group>
 
         <Button variant="primary" type="submit" disabled={!isValid}>
-          Submit
+          {isSubmitting ? (
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+          ) : (
+            'Submit'
+          )}
         </Button>
       </Form>
     </Container>
