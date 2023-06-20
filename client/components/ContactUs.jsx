@@ -4,8 +4,11 @@ import { Container } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import { useForm } from 'react-hook-form'
 import { contactUs } from '../apis/contactUsApi'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 export default function ContactUs() {
+  const navigate = useNavigate()
   const initState = {
     email: '',
     name: '',
@@ -39,7 +42,12 @@ export default function ContactUs() {
 
   const onSubmit = (values) => {
     contactUs(values)
-      .then(() => console.log('we have sent an email'))
+      .then(() => {
+        toast.success(
+          'We have received your message and will contact you as soon as we can'
+        )
+        navigate('/')
+      })
       .catch((error) => handleApiErrors(error))
   }
 
