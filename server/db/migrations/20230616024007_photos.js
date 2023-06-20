@@ -7,7 +7,6 @@ exports.up = function (knex) {
     table.increments('photoId').primary()
     table.string('photoUrl')
     table.integer('albumId').unsigned()
-
     table.foreign('albumId').references('album.albumId')
   })
 }
