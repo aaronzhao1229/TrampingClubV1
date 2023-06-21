@@ -40,7 +40,7 @@ router.get('/getPhotos/:albumId', async (req, res) => {
   }
   const url = []
   for (let i = 0; i < imageNames.length; i++) {
-    let imageName = await getImageFromS3(imageNames[i])
+    let imageName = await getImageFromS3(imageNames[i].photoName)
     url.push(imageName)
   }
   res.json(url)

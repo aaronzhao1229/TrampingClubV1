@@ -1,7 +1,7 @@
 const {
   S3Client,
   PutObjectCommand,
-  GetObjectCommand,
+  // GetObjectCommand,
   DeleteObjectCommand,
 } = require('@aws-sdk/client-s3')
 
@@ -9,7 +9,8 @@ const {
   CloudFrontClient,
   CreateInvalidationCommand,
 } = require('@aws-sdk/client-cloudfront')
-const { getSignedUrl } = require('@aws-sdk/s3-request-presigner')
+const { getSignedUrl } = require('@aws-sdk/cloudfront-signer')
+// const { getSignedUrl } = require('@aws-sdk/s3-request-presigner')
 
 require('dotenv').config()
 
@@ -58,7 +59,15 @@ async function getImageFromS3(imageName) {
   // const url = await getSignedUrl(s3, command, { expiresIn: 3600 })
 
   // get the url from AWS CloudFront
-  const url = 'https://d3jq5i663pfl88.cloudfront.net/' + imageName.photoName
+  // const url = 'https://d3jq5i663pfl88.cloudfront.net/' + imageName.photoName
+
+  // get signed url
+  const url = getSignedUrl({
+    url: 'https://d3jq5i663pfl88.cloudfront.net/' + imageName,
+    dateLessThan: new Date(Date.now() + 1000 * 60 * 24), // expire after one day
+    privateKey: process.env.CLOUDFRONT_PRIVATE_KEY,
+    keyPairId: process.env.CLOUDFRONT_KEY_PAIR_ID,
+  })
   return url
 }
 

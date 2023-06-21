@@ -8,3 +8,4 @@ server/public/styles.css.map
 .env
 tags
 coverage/*
+private_key.pem
