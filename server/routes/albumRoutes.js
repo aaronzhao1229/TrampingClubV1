@@ -55,7 +55,7 @@ router.delete('/deletePhoto/:photoId', async (req, res) => {
     return
   }
   try {
-    await deleteImageFromS3(imageName)
+    await deleteImageFromS3(imageName[0].photoName)
     await db.deletePhoto(photoId)
     res.send(imageName)
   } catch (error) {
