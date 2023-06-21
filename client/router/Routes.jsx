@@ -15,6 +15,7 @@ export const router = createBrowserRouter([
       { path: 'album', element: <Album /> },
       { path: 'fruits', element: <Fruits /> },
       { path: 'contactus', element: <ContactUs /> },
+      // { path: 'profile', element: <Profile /> },
     ],
   },
 ])
