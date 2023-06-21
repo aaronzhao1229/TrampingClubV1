@@ -37,7 +37,7 @@ async function uploadImageToS3(imageName, image) {
 async function getImageFromS3(imageName) {
   const params = {
     Bucket: bucketName,
-    Key: imageName[0].photoName,
+    Key: imageName.photoName,
   }
   const command = new GetObjectCommand(params)
   //generate an url for the photo

@@ -4,15 +4,20 @@ function getAlbum(db = connection) {
   return db('album').join('photos', 'album.albumId', 'photos.albumId').select()
 }
 
-function createPhotos(photo, db = connection) {
-  return db('photos').insert({
-    photoName: photo.photoName,
+function createPhotos(imageNames, db = connection) {
+  const namesToInsert = imageNames.map((imageName) => ({
+    photoName: imageName,
     albumId: 1,
-  })
+  }))
+  return db('photos').insert(namesToInsert)
 }
 
-function getPhotos(id, db = connection) {
-  return db('photos').select('photoName').where('photoId', id)
+function getPhotosByAlbumId(albumId, db = connection) {
+  return db('photos').select('photoName').where('albumId', albumId)
+}
+
+function getPhotoByPhotoId(photoId, db = connection) {
+  return db('photos').select('photoName').where('photoId', photoId)
 }
 
 function deletePhoto(id, db = connection) {
@@ -22,6 +27,7 @@ function deletePhoto(id, db = connection) {
 module.exports = {
   getAlbum,
   createPhotos,
-  getPhotos,
+  getPhotosByAlbumId,
+  getPhotoByPhotoId,
   deletePhoto,
 }
