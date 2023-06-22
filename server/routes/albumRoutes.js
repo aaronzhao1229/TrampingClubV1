@@ -36,18 +36,18 @@ router.post('/uploadImage', upload.array('image'), async (req, res) => {
 
 router.get('/getPhotos/:albumId', async (req, res) => {
   const albumId = req.params.albumId
-  const imageNames = await db.getPhotosByAlbumId(albumId)
+  const images = await db.getPhotosByAlbumId(albumId)
 
-  if (imageNames.length === 0) {
+  if (images.length === 0) {
     res.status(404).send('Image not found')
     return
   }
-  const url = []
-  for (let i = 0; i < imageNames.length; i++) {
-    let imageName = await getImageFromS3(imageNames[i].photoName)
-    url.push(imageName)
+  const photos = []
+  for (let i = 0; i < images.length; i++) {
+    let imageUrl = await getImageFromS3(images[i].photoName)
+    photos.push({ photoId: images[i].photoId, url: imageUrl })
   }
-  res.json(url)
+  res.json(photos)
 })
 
 router.delete('/deletePhoto/:photoId', async (req, res) => {
@@ -60,7 +60,7 @@ router.delete('/deletePhoto/:photoId', async (req, res) => {
   }
   try {
     await deleteImageFromS3(imageName[0].photoName)
-    await db.deletePhoto(photoId)
+    await db.deletePhotoByPhotoId(photoId)
     res.send(imageName)
   } catch (error) {
     console.log(error)

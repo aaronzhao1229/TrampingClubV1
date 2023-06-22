@@ -29,14 +29,14 @@ async function createPhotos(newAlbum, imageNames, db = connection) {
 }
 
 function getPhotosByAlbumId(albumId, db = connection) {
-  return db('photos').select('photoName').where('albumId', albumId)
+  return db('photos').select('photoId', 'photoName').where('albumId', albumId)
 }
 
 function getPhotoByPhotoId(photoId, db = connection) {
   return db('photos').select('photoName').where('photoId', photoId)
 }
 
-function deletePhoto(id, db = connection) {
+function deletePhotoByPhotoId(id, db = connection) {
   return db('photos').delete().where('photoId', id)
 }
 
@@ -45,5 +45,5 @@ module.exports = {
   createPhotos,
   getPhotosByAlbumId,
   getPhotoByPhotoId,
-  deletePhoto,
+  deletePhotoByPhotoId,
 }

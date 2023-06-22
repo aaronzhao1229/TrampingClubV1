@@ -22,7 +22,13 @@ export const fetchPhotosAsync = createAsyncThunk(
 export const photosSlice = createSlice({
   name: 'photos',
   initialState,
-  reducers: {},
+  reducers: {
+    removePhoto: (state, action) => {
+      state.photos = [...state.photos].filter(
+        (photo) => photo.photoId !== action.payload
+      )
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchPhotosAsync.pending, (state) => {
       state.status = 'pendingFetchPhotos'
@@ -38,3 +44,5 @@ export const photosSlice = createSlice({
     })
   },
 })
+
+export const { removePhoto } = photosSlice.actions

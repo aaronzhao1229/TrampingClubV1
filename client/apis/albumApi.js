@@ -16,6 +16,15 @@ export function getPhotosByAlbumId(albumId) {
   // .catch((error) => console.log(error))
 }
 
+export function deletePhotoByPhotoId(photoId) {
+  return request
+    .delete(rootUrl + `/album/deletePhoto/${photoId}`)
+    .then((res) => {
+      return res.body
+    })
+  // .catch((error) => console.log(error))
+}
+
 export function createAlbum(newAlbum) {
   return request
     .post(rootUrl + '/album/uploadImage')
