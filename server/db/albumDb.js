@@ -1,13 +1,24 @@
 const connection = require('./connection')
 
 function getAlbum(db = connection) {
-  return db('album').join('photos', 'album.albumId', 'photos.albumId').select()
+  return db('album')
+    .join('photos', function () {
+      this.on('photos.albumId', '=', 'album.albumId').andOn(
+        'photos.photoId',
+        '=',
+        db.raw(
+          '(select max(photoId) from photos where photos.albumId = album .albumId)'
+        )
+      )
+    })
+
+    .select()
 }
 
 function createPhotos(imageNames, db = connection) {
   const namesToInsert = imageNames.map((imageName) => ({
     photoName: imageName,
-    albumId: 1,
+    albumId: 2,
   }))
   return db('photos').insert(namesToInsert)
 }

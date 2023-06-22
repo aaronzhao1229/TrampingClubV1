@@ -64,15 +64,19 @@ router.delete('/deletePhoto/:photoId', async (req, res) => {
   }
 })
 
-router.get('/', (req, res) => {
-  db.getAlbum()
-    .then((results) => {
-      res.json({ album: results })
-    })
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ message: 'Something went wrong' })
-    })
+router.get('/', async (req, res) => {
+  try {
+    const album = await db.getAlbum()
+
+    for (let i = 0; i < album.length; i++) {
+      let url = await getImageFromS3(album[i].photoName)
+      album[i].photoUrl = url
+    }
+    res.json(album)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ message: 'Something went wrong' })
+  }
 })
 
 module.exports = router
