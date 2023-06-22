@@ -1,28 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchPhotosAsync, removePhoto } from '../slice/photosSlice'
+import { fetchPhotosAsync, removePhotoAsync } from '../slice/photosSlice'
 import { useParams } from 'react-router-dom'
 import { Container, Image, Button, Spinner } from 'react-bootstrap'
-import { deletePhotoByPhotoId } from '../apis/albumApi'
 
 export default function SingleAlbum() {
   const params = useParams()
   const albumId = params.albumId
   const photos = useSelector((state) => state.photos)
-  const [loading, setLoading] = useState(false)
+
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchPhotosAsync(albumId))
   }, [dispatch])
 
   function deletePhoto(photoId) {
-    setLoading(true)
-    deletePhotoByPhotoId(photoId)
-      .then(() => dispatch(removePhoto(photoId)))
-      .catch((err) => console.log(err))
-      .finally(() => setLoading(false))
+    dispatch(removePhotoAsync(photoId))
   }
 
+  console.log(photos)
   return (
     <Container fluid>
       {photos.photos.map((photo, i) => (
@@ -33,7 +29,7 @@ export default function SingleAlbum() {
             onClick={() => window.open(photo.url)}
           />
           <Button onClick={() => deletePhoto(photo.photoId)}>
-            {loading ? (
+            {photos.status === 'pendingRemovePhoto' + photo.photoId ? (
               <Spinner
                 as="span"
                 animation="border"

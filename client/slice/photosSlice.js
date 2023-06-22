@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getPhotosByAlbumId } from '../apis/albumApi'
+import { deletePhotoByPhotoId, getPhotosByAlbumId } from '../apis/albumApi'
 
 const initialState = {
   status: 'idle',
@@ -19,16 +19,22 @@ export const fetchPhotosAsync = createAsyncThunk(
   }
 )
 
+export const removePhotoAsync = createAsyncThunk(
+  'ablum/removePhotoAsync',
+  async (photoId, thunkAPI) => {
+    try {
+      const response = await deletePhotoByPhotoId(photoId)
+      return response
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message })
+    }
+  }
+)
+
 export const photosSlice = createSlice({
   name: 'photos',
   initialState,
-  reducers: {
-    removePhoto: (state, action) => {
-      state.photos = [...state.photos].filter(
-        (photo) => photo.photoId !== action.payload
-      )
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchPhotosAsync.pending, (state) => {
       state.status = 'pendingFetchPhotos'
@@ -39,6 +45,19 @@ export const photosSlice = createSlice({
       state.photos = action.payload
     })
     builder.addCase(fetchPhotosAsync.rejected, (state, action) => {
+      state.status = 'idle'
+      console.log(action.payload)
+    })
+    builder.addCase(removePhotoAsync.pending, (state, action) => {
+      state.status = 'pendingRemovePhoto' + action.meta.arg
+    })
+    builder.addCase(removePhotoAsync.fulfilled, (state, action) => {
+      state.photos = [...state.photos].filter(
+        (photo) => photo.photoId !== action.meta.arg
+      )
+      state.status = 'idle'
+    })
+    builder.addCase(removePhotoAsync.rejected, (state, action) => {
       state.status = 'idle'
       console.log(action.payload)
     })

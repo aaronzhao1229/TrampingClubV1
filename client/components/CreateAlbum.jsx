@@ -6,15 +6,15 @@ import { useDispatch } from 'react-redux'
 import { setAlbum } from '../slice/albumSlice'
 import { useNavigate } from 'react-router-dom'
 
+const initState = {
+  tripName: '',
+  date: '',
+  photos: [],
+}
+
 export default function CreateAlbum() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  // const navigate = useNavigate()
-  const initState = {
-    tripName: '',
-    date: '',
-    photos: [],
-  }
 
   const {
     register,
@@ -41,6 +41,15 @@ export default function CreateAlbum() {
   // }
 
   const onSubmit = (values) => {
+    // console.log(isSubmitting)
+    // setTimeout(() => console.log(values), 3000)
+    // console.log(isSubmitting)
+
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     resolve()
+    //   }, 2000)
+    // })
     const formData = new FormData()
 
     formData.append('albumName', values.tripName)
@@ -48,35 +57,13 @@ export default function CreateAlbum() {
     for (let i = 0; i < values.photos.length; i++) {
       formData.append('image', values.photos.item(i))
     }
-
-    // formData.append('image', values.photos)
-    // console.log(values.photos)
-    createAlbum(formData)
+    return createAlbum(formData)
       .then(() => {
         dispatch(setAlbum())
-        navigate('/')
+        navigate('/album')
       })
       .catch((err) => console.error(err.message))
-
-    // return contactUs(values)
-    //   .then(() => {
-    //     toast.success(
-    //       'We have received your message and will contact you as soon as we can'
-    //     )
-    //     navigate('/')
-    //   })
-    //   .catch((error) => handleApiErrors(error))
   }
-
-  // useEffect(() => {
-  //   const subscription = watch((value, { name, type }) => {
-  //     console.log('>>', value, name, type)
-  //     // {1: '1', 2: '9'} '2' 'change'
-  //     console.log(errors)
-  //   })
-
-  //   return () => subscription.unsubscribe()
-  // }, [watch])
 
   return (
     <Container className="my-4">
