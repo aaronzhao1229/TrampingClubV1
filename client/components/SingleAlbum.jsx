@@ -17,7 +17,13 @@ export default function SingleAlbum() {
   return (
     <Container fluid>
       {photos.photos.map((url, i) => (
-        <Image key={i} src={url} onClick={() => window.open(url)} />
+        <div key={i} className="photoFrame">
+          <Image
+            className="photos"
+            src={url}
+            onClick={() => window.open(url)}
+          />
+        </div>
       ))}
     </Container>
   )

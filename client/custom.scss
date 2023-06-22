@@ -20,5 +20,15 @@ $info: #9ab6da;
 $warning: #e49b1f;
 $danger: #f44336;
 
+.photoFrame {
+  width: 400px;
+  height: 400px;
+}
+
+.photos {
+  max-width: 80%;
+  max-height: 80%;
+}
+
 // import bootstrap styles at the bottom!
 @import '~bootstrap/scss/bootstrap.scss';
