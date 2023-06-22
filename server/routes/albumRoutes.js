@@ -19,8 +19,12 @@ router.post('/uploadImage', upload.array('image'), async (req, res) => {
     await uploadImageToS3(imageName, req.files[i])
     imageNames.push(imageName)
   }
+  const newAlbum = {
+    albumName: req.body.albumName,
+    tripDate: req.body.tripDate,
+  }
 
-  db.createPhotos(imageNames)
+  db.createPhotos(newAlbum, imageNames)
     .then((result) => {
       res.json(result)
     })

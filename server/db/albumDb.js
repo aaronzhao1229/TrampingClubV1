@@ -15,10 +15,15 @@ function getAlbum(db = connection) {
     .select()
 }
 
-function createPhotos(imageNames, db = connection) {
+async function createPhotos(newAlbum, imageNames, db = connection) {
+  const newAlbumId = await db('album').insert({
+    albumName: newAlbum.albumName,
+    tripDate: newAlbum.tripDate,
+  })
+
   const namesToInsert = imageNames.map((imageName) => ({
     photoName: imageName,
-    albumId: 2,
+    albumId: newAlbumId[0],
   }))
   return db('photos').insert(namesToInsert)
 }

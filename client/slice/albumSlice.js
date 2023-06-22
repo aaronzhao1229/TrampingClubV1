@@ -22,7 +22,11 @@ export const fetchAlbumAsync = createAsyncThunk(
 export const albumSlice = createSlice({
   name: 'album',
   initialState,
-  reducers: {},
+  reducers: {
+    setAlbum: (state) => {
+      state.albumLoaded = false
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchAlbumAsync.pending, (state) => {
       state.status = 'pendingFetchAlbum'
@@ -38,3 +42,5 @@ export const albumSlice = createSlice({
     })
   },
 })
+
+export const { setAlbum } = albumSlice.actions

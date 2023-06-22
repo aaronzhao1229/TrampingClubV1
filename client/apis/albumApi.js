@@ -15,3 +15,13 @@ export function getPhotosByAlbumId(albumId) {
   })
   // .catch((error) => console.log(error))
 }
+
+export function createAlbum(newAlbum) {
+  return request
+    .post(rootUrl + '/album/uploadImage')
+    .send(newAlbum)
+    .then((res) => {
+      return res.body
+    })
+  // .catch((error) => console.log(error))
+}

@@ -6,6 +6,7 @@ import Fruits from '../components/Fruits'
 import Album from '../components/Album'
 import ContactUs from '../components/ContactUs'
 import SingleAlbum from '../components/SingleAlbum'
+import CreateAlbum from '../components/CreateAlbum'
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ export const router = createBrowserRouter([
       { path: 'about', element: <About /> },
       { path: 'album', element: <Album /> },
       { path: 'album/:albumId', element: <SingleAlbum /> },
+      { path: 'createAlbum', element: <CreateAlbum /> },
       { path: 'fruits', element: <Fruits /> },
       { path: 'contactus', element: <ContactUs /> },
       // { path: 'profile', element: <Profile /> },
