@@ -40,10 +40,22 @@ function deletePhotoByPhotoId(id, db = connection) {
   return db('photos').delete().where('photoId', id)
 }
 
+function getAlbumByAlbumId(albumId, db = connection) {
+  return db('album').select().where('albumId', albumId)
+}
+function deleteAlbumByAlbumId(albumId, db = connection) {
+  return db('photos')
+    .delete()
+    .where('albumId', albumId)
+    .then(() => db('album').delete().where('albumId', albumId))
+}
+
 module.exports = {
   getAlbum,
   createPhotos,
   getPhotosByAlbumId,
   getPhotoByPhotoId,
   deletePhotoByPhotoId,
+  deleteAlbumByAlbumId,
+  getAlbumByAlbumId,
 }

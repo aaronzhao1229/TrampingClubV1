@@ -68,6 +68,37 @@ router.delete('/deletePhoto/:photoId', async (req, res) => {
   }
 })
 
+router.delete('/deleteAlbum/:albumId', async (req, res) => {
+  const albumId = req.params.albumId
+  const album = await db.getAlbumByAlbumId(albumId)
+
+  if (album.length === 0) {
+    res.status(404).send('Album not found')
+    return
+  }
+  const photos = await db.getPhotosByAlbumId(albumId)
+  if (photos.length !== 0) {
+    try {
+      for (let i = 0; i < photos.length; i++) {
+        await deleteImageFromS3(photos[i].photoName)
+      }
+      await db.deleteAlbumByAlbumId(albumId)
+      res.send(album[0].albumName + ' has been deleted.')
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ message: 'Something went wrong' })
+    }
+  } else {
+    try {
+      await db.deleteAlbumByAlbumId(albumId)
+      res.send(album[0].albumName + ' has been deleted.')
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ message: 'Something went wrong' })
+    }
+  }
+})
+
 router.get('/', async (req, res) => {
   try {
     const album = await db.getAlbum()
