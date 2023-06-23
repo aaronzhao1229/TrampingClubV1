@@ -16,7 +16,7 @@ router.post('/uploadProgramme', upload.single('file'), async (req, res) => {
   let fileName = randomImageName()
   await uploadImageToS3(fileName, req.file)
 
-  db.createProgram(req.body.category, fileName)
+  db.createProgram(req.body, fileName)
     .then((result) => {
       res.json(result)
     })

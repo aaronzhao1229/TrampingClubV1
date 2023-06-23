@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 export default function TrampProgramme() {
   const programmes = useSelector((state) => state.programmes)
   let trampProgramme = {
+    title: '',
     fileUrl: '',
   }
   if (programmes.programmes.length !== 0) {
@@ -14,7 +15,7 @@ export default function TrampProgramme() {
 
   return (
     <>
-      <h1>Tramp Programme</h1>
+      <h1>{trampProgramme.title}</h1>
       <object
         data={trampProgramme.fileUrl}
         type="application/pdf"

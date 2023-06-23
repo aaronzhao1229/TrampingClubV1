@@ -1,9 +1,10 @@
 const connection = require('./connection')
 
-function createProgram(catogory, fileName, db = connection) {
+function createProgram(info, fileName, db = connection) {
   const dataToInsert = {
-    programmeCategory: catogory,
+    programmeCategory: info.catogory,
     fileName: fileName,
+    title: info.title,
   }
   return db('programmes').insert(dataToInsert)
 }
