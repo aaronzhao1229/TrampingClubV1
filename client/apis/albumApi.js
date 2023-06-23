@@ -43,3 +43,12 @@ export function deleteAlbumByAlbumId(albumId) {
     })
   // .catch((error) => console.log(error))
 }
+
+export function editAlbum(editedAlbum) {
+  return request
+    .patch(rootUrl + `/album/editAlbum/${editedAlbum.albumId}`)
+    .send(editedAlbum)
+    .then((res) => {
+      return res.body
+    })
+}

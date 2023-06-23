@@ -3,11 +3,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchPhotosAsync, removePhotoAsync } from '../slice/photosSlice'
 import { useParams } from 'react-router-dom'
 import { Container, Image, Button, Spinner } from 'react-bootstrap'
+import EditAlbumForm from './EditAlbumForm'
 
 export default function ManageSingleAlbum() {
   const params = useParams()
+
   const albumId = params.albumId
   const photos = useSelector((state) => state.photos)
+  const album = useSelector((state) => state.album)
+
+  const targetAlbum = album.album.find((e) => e.albumId === Number(albumId))
 
   const dispatch = useDispatch()
   useEffect(() => {
@@ -20,6 +25,7 @@ export default function ManageSingleAlbum() {
 
   return (
     <Container fluid>
+      <EditAlbumForm targetAlbum={targetAlbum} />
       {photos.photos.map((photo, i) => (
         <div key={i} className="photoFrame">
           <Image

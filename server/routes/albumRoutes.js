@@ -103,7 +103,7 @@ router.patch('/editAlbum/:albumId', (req, res) => {
   const album = req.body
   const editedAlbum = {
     albumId: req.params.albumId,
-    albumName: album.albumName,
+    albumName: album.tripName,
     tripDate: album.tripDate,
   }
 

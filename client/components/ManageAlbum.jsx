@@ -30,7 +30,7 @@ export default function ManageAlbum() {
                   onClick={() => navigate(`/manageAlbum/${trip.albumId}`)}
                   variant="primary"
                 >
-                  View More
+                  Edit Album
                 </Button>
                 <Button
                   onClick={() => dispatch(removeAlbumAsync(trip.albumId))}
@@ -44,7 +44,7 @@ export default function ManageAlbum() {
                       aria-hidden="true"
                     />
                   ) : (
-                    'Delete the album'
+                    'Delete album'
                   )}
                 </Button>
               </Card.Body>
