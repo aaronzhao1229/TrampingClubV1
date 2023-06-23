@@ -5,7 +5,7 @@
 exports.up = function (knex) {
   return knex.schema.createTable('photos', (table) => {
     table.increments('photoId').primary()
-    table.string('photoUrl')
+    table.string('photoName')
     table.integer('albumId').unsigned()
     table.foreign('albumId').references('album.albumId')
   })
