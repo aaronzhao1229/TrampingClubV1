@@ -8,6 +8,11 @@ function createProgram(catogory, fileName, db = connection) {
   return db('programmes').insert(dataToInsert)
 }
 
+function getProgramme(db = connection) {
+  return db('programmes').select()
+}
+
 module.exports = {
   createProgram,
+  getProgramme,
 }

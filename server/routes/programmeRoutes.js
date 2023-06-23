@@ -26,4 +26,18 @@ router.post('/uploadProgramme', upload.single('file'), async (req, res) => {
     })
 })
 
+router.get('/', async (req, res) => {
+  try {
+    const programmes = await db.getProgramme()
+    for (let i = 0; i < programmes.length; i++) {
+      let url = await getImageFromS3(programmes[i].fileName)
+      programmes[i].fileUrl = url
+    }
+    res.json(programmes)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
+
 module.exports = router
