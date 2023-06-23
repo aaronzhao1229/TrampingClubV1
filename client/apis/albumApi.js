@@ -34,3 +34,12 @@ export function createAlbum(newAlbum) {
     })
   // .catch((error) => console.log(error))
 }
+
+export function deleteAlbumByAlbumId(albumId) {
+  return request
+    .delete(rootUrl + `/album/deleteAlbum/${albumId}`)
+    .then((res) => {
+      return res.body
+    })
+  // .catch((error) => console.log(error))
+}

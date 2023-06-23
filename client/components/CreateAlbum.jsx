@@ -60,7 +60,7 @@ export default function CreateAlbum() {
     return createAlbum(formData)
       .then(() => {
         dispatch(setAlbum())
-        navigate('/album')
+        navigate('/manageAlbum')
       })
       .catch((err) => console.error(err.message))
   }

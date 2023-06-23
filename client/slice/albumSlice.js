@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getAlbum } from '../apis/albumApi'
+import { deleteAlbumByAlbumId, getAlbum } from '../apis/albumApi'
 
 const initialState = {
   status: 'idle',
@@ -12,6 +12,18 @@ export const fetchAlbumAsync = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await getAlbum()
+      return response
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message })
+    }
+  }
+)
+
+export const removeAlbumAsync = createAsyncThunk(
+  'ablum/removeAlbumAsync',
+  async (albumId, thunkAPI) => {
+    try {
+      const response = await deleteAlbumByAlbumId(albumId)
       return response
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message })
@@ -37,6 +49,19 @@ export const albumSlice = createSlice({
       state.album = action.payload
     })
     builder.addCase(fetchAlbumAsync.rejected, (state, action) => {
+      state.status = 'idle'
+      console.log(action.payload)
+    })
+    builder.addCase(removeAlbumAsync.pending, (state, action) => {
+      state.status = 'pendingRemoveAlbum' + action.meta.arg
+    })
+    builder.addCase(removeAlbumAsync.fulfilled, (state, action) => {
+      state.album = [...state.album].filter(
+        (album) => album.albumId !== action.meta.arg
+      )
+      state.status = 'idle'
+    })
+    builder.addCase(removeAlbumAsync.rejected, (state, action) => {
       state.status = 'idle'
       console.log(action.payload)
     })

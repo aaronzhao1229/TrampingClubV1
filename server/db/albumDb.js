@@ -11,7 +11,6 @@ function getAlbum(db = connection) {
         )
       )
     })
-
     .select()
 }
 

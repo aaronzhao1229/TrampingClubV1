@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAlbumAsync } from '../slice/albumSlice'
-import { Card, Row, Col, Container, Button } from 'react-bootstrap'
+import { fetchAlbumAsync, removeAlbumAsync } from '../slice/albumSlice'
+import { Card, Row, Col, Container, Button, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
 export default function ManageAlbum() {
@@ -11,7 +11,7 @@ export default function ManageAlbum() {
   useEffect(() => {
     dispatch(fetchAlbumAsync())
   }, [])
-
+  if (album.album.length === 0) return <h6>No Album created.</h6>
   return (
     <Container fluid>
       <Row xs={1} md={4} className="g-4">
@@ -31,6 +31,21 @@ export default function ManageAlbum() {
                   variant="primary"
                 >
                   View More
+                </Button>
+                <Button
+                  onClick={() => dispatch(removeAlbumAsync(trip.albumId))}
+                >
+                  {album.status === 'pendingRemoveAlbum' + trip.albumId ? (
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    'Delete the album'
+                  )}
                 </Button>
               </Card.Body>
             </Card>

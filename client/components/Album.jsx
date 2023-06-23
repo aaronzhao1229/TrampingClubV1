@@ -12,6 +12,8 @@ export default function Album() {
     dispatch(fetchAlbumAsync())
   }, [])
 
+  if (album.album.length === 0) return <h6>No Album created.</h6>
+
   return (
     <Container fluid>
       <Row xs={1} md={4} className="g-4">
