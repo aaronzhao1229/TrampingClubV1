@@ -64,7 +64,7 @@ async function getImageFromS3(imageName) {
   // get signed url
   const url = getSignedUrl({
     url: 'https://d3jq5i663pfl88.cloudfront.net/' + imageName,
-    dateLessThan: new Date(Date.now() + 1000 * 60 * 24), // expire after one day
+    dateLessThan: new Date(Date.now() + 1000 * 60 * 60), // expire after one hour
     privateKey: process.env.CLOUDFRONT_PRIVATE_KEY,
     keyPairId: process.env.CLOUDFRONT_KEY_PAIR_ID,
   })
