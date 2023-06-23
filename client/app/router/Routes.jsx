@@ -1,14 +1,14 @@
 import { createBrowserRouter } from 'react-router-dom'
-import App from '../components/App'
+import App from '../layout/App'
 import React from 'react'
-import About from '../components/About'
-import Fruits from '../components/Fruits'
-import Album from '../components/Album'
-import ContactUs from '../components/ContactUs'
-import SingleAlbum from '../components/SingleAlbum'
-import CreateAlbum from '../components/CreateAlbum'
-import ManageAlbum from '../components/ManageAlbum'
-import ManageSingleAlbum from '../components/ManageSingleAlbum'
+import About from '../../features/about/About'
+
+import Album from '../../features/album/Album'
+import ContactUs from '../../features/contactUs/ContactUs'
+import SingleAlbum from '../../features/album/SingleAlbum'
+import CreateAlbum from '../../features/admin/CreateAlbum'
+import ManageAlbum from '../../features/admin/ManageAlbum'
+import ManageSingleAlbum from '../../features/admin/ManageSingleAlbum'
 
 export const router = createBrowserRouter([
   {
@@ -19,7 +19,6 @@ export const router = createBrowserRouter([
       { path: 'album', element: <Album /> },
       { path: 'album/:albumId', element: <SingleAlbum /> },
       { path: 'createAlbum', element: <CreateAlbum /> },
-      { path: 'fruits', element: <Fruits /> },
       { path: 'contactus', element: <ContactUs /> },
       { path: 'manageAlbum', element: <ManageAlbum /> },
       { path: 'manageAlbum/:albumId', element: <ManageSingleAlbum /> },

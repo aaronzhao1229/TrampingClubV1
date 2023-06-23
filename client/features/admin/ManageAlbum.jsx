@@ -1,21 +1,18 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAlbumAsync } from '../slice/albumSlice'
-import { Card, Row, Col, Container, Button } from 'react-bootstrap'
+import { fetchAlbumAsync, removeAlbumAsync } from './albumSlice'
+import { Card, Row, Col, Container, Button, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import { convertDateToString } from '../utils/utils'
+import { convertDateToString } from '../../app/utils/utils'
 
-export default function Album() {
+export default function ManageAlbum() {
   const album = useSelector((state) => state.album)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchAlbumAsync())
   }, [])
-
   if (album.album.length === 0) return <h6>No Album created.</h6>
-  // convertDateToString(album.album[0].tripDate)
-
   return (
     <Container fluid>
       <Row xs={1} md={4} className="g-4">
@@ -31,10 +28,25 @@ export default function Album() {
                 <Card.Title>{trip.albumName}</Card.Title>
                 <Card.Text>{convertDateToString(trip.tripDate)}</Card.Text>
                 <Button
-                  onClick={() => navigate(`/album/${trip.albumId}`)}
+                  onClick={() => navigate(`/manageAlbum/${trip.albumId}`)}
                   variant="primary"
                 >
-                  View More
+                  Edit Album
+                </Button>
+                <Button
+                  onClick={() => dispatch(removeAlbumAsync(trip.albumId))}
+                >
+                  {album.status === 'pendingRemoveAlbum' + trip.albumId ? (
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    'Delete album'
+                  )}
                 </Button>
               </Card.Body>
             </Card>

@@ -1,9 +1,9 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Container, Spinner, Form, Button } from 'react-bootstrap'
-import { createAlbum } from '../apis/albumApi'
+import { createAlbum } from '../../app/apis/albumApi'
 import { useDispatch } from 'react-redux'
-import { setAlbum } from '../slice/albumSlice'
+import { setAlbum } from './albumSlice'
 import { useNavigate } from 'react-router-dom'
 
 const initState = {

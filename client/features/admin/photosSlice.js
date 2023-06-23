@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { deletePhotoByPhotoId, getPhotosByAlbumId } from '../apis/albumApi'
+import {
+  deletePhotoByPhotoId,
+  getPhotosByAlbumId,
+} from '../../app/apis/albumApi'
 
 const initialState = {
   status: 'idle',

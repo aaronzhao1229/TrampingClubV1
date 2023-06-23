@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 
 import store from './store'
 import { RouterProvider } from 'react-router-dom'
-import { router } from './router/Routes'
+import { router } from './app/router/Routes'
 
 // import 'bootstrap/dist/css/bootstrap.min.css'
 import './custom.scss'

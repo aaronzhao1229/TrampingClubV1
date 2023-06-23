@@ -3,7 +3,7 @@ import React from 'react'
 import { Container, Spinner } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import { useForm } from 'react-hook-form'
-import { contactUs } from '../apis/contactUsApi'
+import { contactUs } from '../../app/apis/contactUsApi'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 

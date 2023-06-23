@@ -5,8 +5,8 @@ import Button from 'react-bootstrap/Button'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
-import { editAlbumAsync } from '../slice/albumSlice'
-import { convertDateForDatePicker } from '../utils/utils'
+import { editAlbumAsync } from './albumSlice'
+import { convertDateForDatePicker } from '../../app/utils/utils'
 
 export default function EditAlbumForm({ targetAlbum }) {
   const [hasSubmitted, setHasSubmitted] = useState(false)
