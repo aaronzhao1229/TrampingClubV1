@@ -99,6 +99,24 @@ router.delete('/deleteAlbum/:albumId', async (req, res) => {
   }
 })
 
+router.patch('/editAlbum/:albumId', (req, res) => {
+  const album = req.body
+  const editedAlbum = {
+    albumId: req.params.albumId,
+    albumName: album.albumName,
+    tripDate: album.tripDate,
+  }
+
+  db.editAlbum(editedAlbum)
+    .then(() => {
+      return res.json('album has been updated')
+    })
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json({ message: 'Something went wrong' })
+    })
+})
+
 router.get('/', async (req, res) => {
   try {
     const album = await db.getAlbum()

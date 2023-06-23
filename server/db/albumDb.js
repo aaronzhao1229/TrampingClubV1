@@ -49,6 +49,10 @@ function deleteAlbumByAlbumId(albumId, db = connection) {
     .then(() => db('album').delete().where('albumId', albumId))
 }
 
+function editAlbum(editedAlbum, db = connection) {
+  return db('album').update(editedAlbum).where('albumId', editedAlbum.albumId)
+}
+
 module.exports = {
   getAlbum,
   createPhotos,
@@ -57,4 +61,5 @@ module.exports = {
   deletePhotoByPhotoId,
   deleteAlbumByAlbumId,
   getAlbumByAlbumId,
+  editAlbum,
 }
