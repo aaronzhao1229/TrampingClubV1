@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
 import { editAlbumAsync } from '../slice/albumSlice'
+import { convertDateForDatePicker } from '../utils/utils'
 
 export default function EditAlbumForm({ targetAlbum }) {
   const [hasSubmitted, setHasSubmitted] = useState(false)
@@ -41,10 +42,10 @@ export default function EditAlbumForm({ targetAlbum }) {
 
   useEffect(() => {
     if (targetAlbum && !isDirty) {
-      const date = targetAlbum.tripDate.split('T')[0]
+      // const date = targetAlbum.tripDate.split('T')[0]
       const albumInfo = {
         albumName: targetAlbum.albumName,
-        tripDate: date,
+        tripDate: convertDateForDatePicker(targetAlbum.tripDate),
       }
       reset(albumInfo)
     }

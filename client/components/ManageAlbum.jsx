@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchAlbumAsync, removeAlbumAsync } from '../slice/albumSlice'
 import { Card, Row, Col, Container, Button, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import { convertDateToString } from '../utils/utils'
 
 export default function ManageAlbum() {
   const album = useSelector((state) => state.album)
@@ -25,7 +26,7 @@ export default function ManageAlbum() {
               />
               <Card.Body>
                 <Card.Title>{trip.albumName}</Card.Title>
-                <Card.Text>{trip.tripDate}</Card.Text>
+                <Card.Text>{convertDateToString(trip.tripDate)}</Card.Text>
                 <Button
                   onClick={() => navigate(`/manageAlbum/${trip.albumId}`)}
                   variant="primary"
