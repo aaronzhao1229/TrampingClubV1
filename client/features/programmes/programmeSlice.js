@@ -19,10 +19,26 @@ export const fetchProgrammesAsync = createAsyncThunk(
   }
 )
 
+// export const updateProgrammeAsync = createAsyncThunk(
+//   'programmes/updateProgrammeAsync',
+//   async (newProgramme, thunkAPI) => {
+//     try {
+//       const response = await updateProgramme(newProgramme)
+//       return response
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue({ error: error.message })
+//     }
+//   }
+// )
+
 export const programmesSlice = createSlice({
   name: 'programmes',
   initialState,
-  reducers: {},
+  reducers: {
+    setProgrammes: (state) => {
+      state.programmeLoaded = false
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchProgrammesAsync.pending, (state) => {
       state.status = 'pendingFetchProgrammes'
@@ -38,3 +54,5 @@ export const programmesSlice = createSlice({
     })
   },
 })
+
+export const { setProgrammes } = programmesSlice.actions

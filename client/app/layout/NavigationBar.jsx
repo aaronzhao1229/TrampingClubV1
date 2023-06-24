@@ -23,6 +23,7 @@ export default function NavigationBar() {
           <Nav.Link href="/contactus">Contact us</Nav.Link>
           <Nav.Link href="/createAlbum">Create Album</Nav.Link>
           <Nav.Link href="/manageAlbum">Manage Albums</Nav.Link>
+          <Nav.Link href="/updateProgramme">Update Programme</Nav.Link>
         </Nav>
       </Container>
     </Navbar>

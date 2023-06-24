@@ -7,3 +7,12 @@ export function getProgrammes() {
     return res.body
   })
 }
+
+export function updateProgramme(newProgramme) {
+  return request
+    .post(rootUrl + '/programme/updateProgramme')
+    .send(newProgramme)
+    .then((res) => {
+      return res.body
+    })
+}

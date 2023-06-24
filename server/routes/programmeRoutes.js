@@ -26,6 +26,29 @@ router.post('/uploadProgramme', upload.single('file'), async (req, res) => {
     })
 })
 
+router.post('/updateProgramme', upload.single('file'), async (req, res) => {
+  let oldProgramme = await db.getProgrammeByCategory(req.body.category)
+  if (!oldProgramme) {
+    res.status(404).send('programme not found')
+  }
+
+  try {
+    await deleteImageFromS3(oldProgramme.fileName)
+    let newFileName = randomImageName()
+    await uploadImageToS3(newFileName, req.file)
+    const newProgramme = {
+      programmeCategory: req.body.category,
+      title: req.body.title,
+      fileName: newFileName,
+    }
+    await db.updateProgram(newProgramme)
+    return res.json('Programme has been updated')
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
+
 router.get('/', async (req, res) => {
   try {
     const programmes = await db.getProgramme()
