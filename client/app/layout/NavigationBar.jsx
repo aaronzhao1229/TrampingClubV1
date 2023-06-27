@@ -18,10 +18,12 @@ export default function NavigationBar() {
         <Nav className="me-auto">
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/about">About</Nav.Link>
+          <Nav.Link href="/tramp">Tramp</Nav.Link>
           <Nav.Link href="/album">Album</Nav.Link>
           <Nav.Link href="/contactus">Contact us</Nav.Link>
           <Nav.Link href="/createAlbum">Create Album</Nav.Link>
           <Nav.Link href="/manageAlbum">Manage Albums</Nav.Link>
+          <Nav.Link href="/updateProgramme">Update Programme</Nav.Link>
         </Nav>
       </Container>
     </Navbar>
