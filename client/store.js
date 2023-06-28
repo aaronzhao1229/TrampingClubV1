@@ -6,6 +6,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { albumSlice } from './features/admin/albumSlice'
 import { photosSlice } from './features/admin/photosSlice'
 import { programmesSlice } from './features/programmes/programmeSlice'
+import { authSlice } from './features/auth/authSlice'
 
 // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 // const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)))
@@ -15,6 +16,7 @@ const store = configureStore({
     album: albumSlice.reducer,
     photos: photosSlice.reducer,
     programmes: programmesSlice.reducer,
+    auth: authSlice.reducer,
   },
 })
 

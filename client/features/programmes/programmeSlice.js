@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getProgrammes } from '../../app/apis/programmeApi'
+
+import agent from '../../app/apis/agent'
 
 const initialState = {
   status: 'idle',
@@ -11,7 +12,7 @@ export const fetchProgrammesAsync = createAsyncThunk(
   'programmes/fetchProgrammesAsync',
   async (_, thunkAPI) => {
     try {
-      const response = await getProgrammes()
+      const response = await agent.programmes.getProgrammes()
       return response
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message })

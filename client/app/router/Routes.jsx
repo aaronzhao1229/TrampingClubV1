@@ -11,21 +11,30 @@ import ManageAlbum from '../../features/admin/ManageAlbum'
 import ManageSingleAlbum from '../../features/admin/ManageSingleAlbum'
 import TrampProgramme from '../../features/programmes/TrampProgramme'
 import CreateProgramme from '../../features/programmes/CreateProgramme'
+import Login from '../../features/auth/Login'
+import RequiredAuth from './RequiredAuth'
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
+      // authenticated routes
+      {
+        element: <RequiredAuth />,
+        children: [
+          { path: 'createAlbum', element: <CreateAlbum /> },
+          { path: 'updateProgramme', element: <CreateProgramme /> },
+          { path: 'manageAlbum', element: <ManageAlbum /> },
+          { path: 'manageAlbum/:albumId', element: <ManageSingleAlbum /> },
+        ],
+      },
       { path: 'about', element: <About /> },
       { path: 'tramp', element: <TrampProgramme /> },
       { path: 'album', element: <Album /> },
       { path: 'album/:albumId', element: <SingleAlbum /> },
-      { path: 'createAlbum', element: <CreateAlbum /> },
-      { path: 'updateProgramme', element: <CreateProgramme /> },
       { path: 'contactus', element: <ContactUs /> },
-      { path: 'manageAlbum', element: <ManageAlbum /> },
-      { path: 'manageAlbum/:albumId', element: <ManageSingleAlbum /> },
+      { path: 'login', element: <Login /> },
     ],
   },
 ])

@@ -1,6 +1,6 @@
 const express = require('express')
 const multer = require('multer')
-
+const verifyJWT = require('../middleware/verifyJWT')
 const crypto = require('crypto')
 const { uploadImageToS3, getImageFromS3, deleteImageFromS3 } = require('../s3')
 const db = require('../db/albumDb')
@@ -117,7 +117,7 @@ router.patch('/editAlbum/:albumId', (req, res) => {
     })
 })
 
-router.get('/', async (req, res) => {
+router.get('/', verifyJWT, async (req, res) => {
   try {
     const album = await db.getAlbum()
 
