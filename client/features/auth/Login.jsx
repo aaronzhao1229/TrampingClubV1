@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { login } from '../../app/apis/userApi'
 import { toast } from 'react-toastify'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setCredentials } from './authSlice'
 
 export default function Login() {

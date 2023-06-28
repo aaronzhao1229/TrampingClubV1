@@ -64,7 +64,7 @@ router.post('/login', async (req, res) => {
         username: foundUser.username,
       },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: '15s' }
+      { expiresIn: '15m' }
     )
     // save refresh token to database
     await db.saveToken(foundUser.username, refreshToken)
@@ -81,11 +81,12 @@ router.post('/login', async (req, res) => {
 })
 
 router.get('/refresh', async (req, res) => {
-  console.log('hey')
   const cookies = req.cookies
+
   if (!cookies?.jwt) return res.sendStatus(401)
   // console.log(cookies.jwt)
   const refreshToken = cookies.jwt
+
   const existingUsers = await db.getUsers()
 
   const foundUser = existingUsers.find(
@@ -103,6 +104,7 @@ router.get('/refresh', async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: '15s' }
     )
+
     res.json({ accessToken })
   })
 })

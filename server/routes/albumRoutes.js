@@ -120,7 +120,7 @@ router.patch('/editAlbum/:albumId', (req, res) => {
 router.get('/', verifyJWT, async (req, res) => {
   try {
     const album = await db.getAlbum()
-
+ 
     for (let i = 0; i < album.length; i++) {
       let url = await getImageFromS3(album[i].photoName)
       album[i].photoUrl = url

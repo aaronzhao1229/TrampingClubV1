@@ -2,8 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import {
   deleteAlbumByAlbumId,
   editAlbum,
-  getAlbum,
+  // getAlbum,
 } from '../../app/apis/albumApi'
+import agentPrivate from '../../app/apis/agentPrivate'
 
 const initialState = {
   status: 'idle',
@@ -15,7 +16,7 @@ export const fetchAlbumAsync = createAsyncThunk(
   'album/fetchAlbumAsync',
   async (_, thunkAPI) => {
     try {
-      const response = await getAlbum()
+      const response = await agentPrivate.album.getAlbum()
       return response
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message })
