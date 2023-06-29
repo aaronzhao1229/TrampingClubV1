@@ -1,9 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import {
-  deleteAlbumByAlbumId,
-  editAlbum,
-  // getAlbum,
-} from '../../app/apis/albumApi'
+
+import agent from '../../app/apis/agent'
 import agentPrivate from '../../app/apis/agentPrivate'
 
 const initialState = {
@@ -16,7 +13,7 @@ export const fetchAlbumAsync = createAsyncThunk(
   'album/fetchAlbumAsync',
   async (_, thunkAPI) => {
     try {
-      const response = await agentPrivate.album.getAlbum()
+      const response = await agent.album.getAlbum()
       return response
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message })
@@ -28,7 +25,7 @@ export const removeAlbumAsync = createAsyncThunk(
   'ablum/removeAlbumAsync',
   async (albumId, thunkAPI) => {
     try {
-      const response = await deleteAlbumByAlbumId(albumId)
+      const response = await agentPrivate.album.deleteAlbumByAlbumId(albumId)
       return response
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message })
@@ -40,7 +37,8 @@ export const editAlbumAsync = createAsyncThunk(
   'ablum/editAlbumAsync',
   async (editedAlbum, thunkAPI) => {
     try {
-      const response = await editAlbum(editedAlbum)
+      // const response = await editAlbum(editedAlbum)
+      const response = await agentPrivate.album.editAlbum(editedAlbum)
       return response
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message })

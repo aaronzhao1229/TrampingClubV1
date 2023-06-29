@@ -11,7 +11,7 @@ axiosPrivate.interceptors.request.use(
     if (!config.headers['Authorization']) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
-    console.log(token)
+
     return config
   },
   (error) => Promise.reject(error)
@@ -41,6 +41,7 @@ const requests = {
   get: (url) => axiosPrivate.get(url).then(responseBody),
   post: (url, body) => axiosPrivate.post(url, body).then(responseBody),
   put: (url, body) => axiosPrivate.put(url, body).then(responseBody),
+  patch: (url, body) => axiosPrivate.patch(url, body).then(responseBody),
   delete: (url) => axiosPrivate.delete(url).then(responseBody),
   postForm: (url, data) =>
     axiosPrivate
@@ -57,7 +58,18 @@ const requests = {
 }
 
 const album = {
-  getAlbum: () => requests.get('/album'),
+  editAlbum: (editedAlbum) =>
+    requests.patch(`/album/editAlbum/${editedAlbum.albumId}`, editedAlbum),
+  createAlbum: (newAlbum) => requests.postForm('/album/uploadImage', newAlbum),
+  deletePhotoByPhotoId: (photoId) =>
+    requests.delete(`/album/deletePhoto/${photoId}`),
+  deleteAlbumByAlbumId: (albumId) =>
+    requests.delete(`/album/deleteAlbum/${albumId}`),
+}
+
+const programmes = {
+  uploadProgramme: (newProgramme) =>
+    requests.postForm('/programme/updateProgramme', newProgramme),
 }
 
 const auth = {
@@ -67,6 +79,7 @@ const auth = {
 const agentPrivate = {
   album,
   auth,
+  programmes,
 }
 
 export default agentPrivate

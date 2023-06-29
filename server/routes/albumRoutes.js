@@ -12,27 +12,32 @@ const randomImageName = (bites = 32) =>
 const storage = multer.memoryStorage() //create a memory storage
 const upload = multer({ storage: storage })
 
-router.post('/uploadImage', upload.array('image'), async (req, res) => {
-  const imageNames = []
-  for (let i = 0; i < req.files.length; i++) {
-    let imageName = randomImageName()
-    await uploadImageToS3(imageName, req.files[i])
-    imageNames.push(imageName)
-  }
-  const newAlbum = {
-    albumName: req.body.albumName,
-    tripDate: req.body.tripDate,
-  }
+router.post(
+  '/uploadImage',
+  verifyJWT,
+  upload.array('image'),
+  async (req, res) => {
+    const imageNames = []
+    for (let i = 0; i < req.files.length; i++) {
+      let imageName = randomImageName()
+      await uploadImageToS3(imageName, req.files[i])
+      imageNames.push(imageName)
+    }
+    const newAlbum = {
+      albumName: req.body.albumName,
+      tripDate: req.body.tripDate,
+    }
 
-  db.createPhotos(newAlbum, imageNames)
-    .then((result) => {
-      res.json(result)
-    })
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ message: 'Something went wrong' })
-    })
-})
+    db.createPhotos(newAlbum, imageNames)
+      .then((result) => {
+        res.json(result)
+      })
+      .catch((err) => {
+        console.log(err)
+        res.status(500).json({ message: 'Something went wrong' })
+      })
+  }
+)
 
 router.get('/getPhotos/:albumId', async (req, res) => {
   const albumId = req.params.albumId
@@ -50,7 +55,7 @@ router.get('/getPhotos/:albumId', async (req, res) => {
   res.json(photos)
 })
 
-router.delete('/deletePhoto/:photoId', async (req, res) => {
+router.delete('/deletePhoto/:photoId', verifyJWT, async (req, res) => {
   const photoId = req.params.photoId
   const imageName = await db.getPhotoByPhotoId(photoId)
 
@@ -68,7 +73,7 @@ router.delete('/deletePhoto/:photoId', async (req, res) => {
   }
 })
 
-router.delete('/deleteAlbum/:albumId', async (req, res) => {
+router.delete('/deleteAlbum/:albumId', verifyJWT, async (req, res) => {
   const albumId = req.params.albumId
   const album = await db.getAlbumByAlbumId(albumId)
 
@@ -99,7 +104,7 @@ router.delete('/deleteAlbum/:albumId', async (req, res) => {
   }
 })
 
-router.patch('/editAlbum/:albumId', (req, res) => {
+router.patch('/editAlbum/:albumId', verifyJWT, (req, res) => {
   const album = req.body
   const editedAlbum = {
     albumId: req.params.albumId,
@@ -117,7 +122,7 @@ router.patch('/editAlbum/:albumId', (req, res) => {
     })
 })
 
-router.get('/', verifyJWT, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const album = await db.getAlbum()
 

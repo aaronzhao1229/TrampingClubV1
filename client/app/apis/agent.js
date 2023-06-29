@@ -35,9 +35,20 @@ const auth = {
   refreshAuth: () => requests.get('/user/refresh'),
 }
 
+const album = {
+  getAlbum: () => requests.get('/album'),
+  getPhotosByAlbumId: (albumId) => requests.get(`/album/getPhotos/${albumId}`),
+}
+
+const contact = {
+  contactUs: (message) => requests.post('/ses/sendEmail', message),
+}
+
 const agent = {
   programmes,
   auth,
+  contact,
+  album,
 }
 
 export default agent

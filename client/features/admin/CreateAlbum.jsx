@@ -1,11 +1,12 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Container, Spinner, Form, Button } from 'react-bootstrap'
-import { createAlbum } from '../../app/apis/albumApi'
+// import { createAlbum } from '../../app/apis/albumApi'
 import { useDispatch } from 'react-redux'
 import { setAlbum } from './albumSlice'
 import { useNavigate } from 'react-router-dom'
 import useRefreshToken from '../../app/hooks/useRefreshToken'
+import agentPrivate from '../../app/apis/agentPrivate'
 
 const initState = {
   tripName: '',
@@ -58,12 +59,16 @@ export default function CreateAlbum() {
     for (let i = 0; i < values.photos.length; i++) {
       formData.append('image', values.photos.item(i))
     }
-    return createAlbum(formData)
-      .then(() => {
-        dispatch(setAlbum())
-        navigate('/manageAlbum')
-      })
-      .catch((err) => console.error(err.message))
+    return (
+      agentPrivate.album
+        .createAlbum(formData)
+        // createAlbum(formData)
+        .then(() => {
+          dispatch(setAlbum())
+          navigate('/manageAlbum')
+        })
+        .catch((err) => console.error(err.message))
+    )
   }
 
   return (
