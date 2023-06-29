@@ -6,11 +6,11 @@ import { setCredentials } from '../../features/auth/authSlice'
 const responseBody = (response) => response.data
 axiosPrivate.interceptors.request.use(
   (config) => {
-    const token = store.getState().auth.token
+    const token = store.getState().auth.accessToken
     if (!config.headers['Authorization']) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
-
+    
     return config
   },
   (error) => Promise.reject(error)
