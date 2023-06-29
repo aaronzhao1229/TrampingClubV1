@@ -8,6 +8,7 @@ import { toast } from 'react-toastify'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from './authSlice'
+import agent from '../../app/apis/agent'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -25,7 +26,8 @@ export default function Login() {
   async function onSubmit(values) {
     try {
       const username = values.username
-      const userData = await login(values)
+      // const userData = await login(values)
+      const userData = await agent.auth.login(values)
       dispatch(setCredentials({ ...userData, username }))
       navigate(location.state?.from || '/')
     } catch (error) {

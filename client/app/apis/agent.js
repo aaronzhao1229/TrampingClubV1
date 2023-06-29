@@ -29,12 +29,14 @@ const programmes = {
   getProgrammes: () => requests.get('/programme'),
 }
 
-// const user = {
-//   refreshToken: () => requests.get('')
-// }
+const auth = {
+  login: (userInfo) =>
+    requests.post('/user/login', userInfo).then(responseBody),
+}
 
 const agent = {
   programmes,
+  auth,
 }
 
 export default agent
