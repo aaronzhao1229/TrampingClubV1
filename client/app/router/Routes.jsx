@@ -2,7 +2,6 @@ import { createBrowserRouter } from 'react-router-dom'
 import App from '../layout/App'
 import React from 'react'
 import About from '../../features/about/About'
-
 import Album from '../../features/album/Album'
 import ContactUs from '../../features/contactUs/ContactUs'
 import SingleAlbum from '../../features/album/SingleAlbum'
@@ -13,20 +12,25 @@ import TrampProgramme from '../../features/programmes/TrampProgramme'
 import CreateProgramme from '../../features/programmes/CreateProgramme'
 import Login from '../../features/auth/Login'
 import RequiredAuth from './RequiredAuth'
+import PersistLogin from '../components/PersistLogin'
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
-      // authenticated routes
       {
-        element: <RequiredAuth />,
+        element: <PersistLogin />,
         children: [
-          { path: 'createAlbum', element: <CreateAlbum /> },
-          { path: 'updateProgramme', element: <CreateProgramme /> },
-          { path: 'manageAlbum', element: <ManageAlbum /> },
-          { path: 'manageAlbum/:albumId', element: <ManageSingleAlbum /> },
+          {
+            element: <RequiredAuth />,
+            children: [
+              { path: 'manageAlbum', element: <ManageAlbum /> },
+              { path: 'createAlbum', element: <CreateAlbum /> },
+              { path: 'updateProgramme', element: <CreateProgramme /> },
+              { path: 'manageAlbum/:albumId', element: <ManageSingleAlbum /> },
+            ],
+          },
         ],
       },
       { path: 'about', element: <About /> },

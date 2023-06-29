@@ -1,9 +1,17 @@
-import Container from 'react-bootstrap/Container'
-import Navbar from 'react-bootstrap/Navbar'
-import Nav from 'react-bootstrap/Nav'
+import { Container, Nav, Navbar, Button } from 'react-bootstrap'
+
 import React from 'react'
+import useLogout from '../hooks/useLogout'
+import { useNavigate } from 'react-router-dom'
 
 export default function NavigationBar() {
+  const logout = useLogout()
+  const navigate = useNavigate()
+
+  const signout = async () => {
+    await logout()
+    navigate('/')
+  }
   return (
     <Navbar bg="primary" variant="dark">
       <Container>
@@ -25,6 +33,7 @@ export default function NavigationBar() {
           <Nav.Link href="/manageAlbum">Manage Albums</Nav.Link>
           <Nav.Link href="/updateProgramme">Update Programme</Nav.Link>
           <Nav.Link href="/login">Login</Nav.Link>
+          <Button onClick={signout}>Logout</Button>
         </Nav>
       </Container>
     </Navbar>
