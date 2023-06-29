@@ -1,7 +1,8 @@
 import { axiosPrivate } from './axios'
 import store from '../../store'
-import { refreshAuth } from './userApi'
+// import { refreshAuth } from './userApi'
 import { setCredentials } from '../../features/auth/authSlice'
+import agent from './agent'
 
 const responseBody = (response) => response.data
 axiosPrivate.interceptors.request.use(
@@ -10,7 +11,7 @@ axiosPrivate.interceptors.request.use(
     if (!config.headers['Authorization']) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
-    
+    console.log(token)
     return config
   },
   (error) => Promise.reject(error)
@@ -24,7 +25,7 @@ axiosPrivate.interceptors.response.use(
     if (error?.response?.status === 403 && !prevRequest?.sent) {
       prevRequest.sent = true
 
-      const newAccessToken = await refreshAuth()
+      const newAccessToken = await agent.auth.refreshAuth()
 
       store.dispatch(setCredentials({ ...newAccessToken, username }))
       prevRequest.headers[
@@ -38,29 +39,34 @@ axiosPrivate.interceptors.response.use(
 
 const requests = {
   get: (url) => axiosPrivate.get(url).then(responseBody),
-  // post: (url, body) => axios.post(url, body).then(responseBody),
-  // put: (url, body) => axios.put(url, body).then(responseBody),
-  // delete: (url) => axios.delete(url).then(responseBody),
-  // postForm: (url, data) =>
-  //   axios
-  //     .post(url, data, {
-  //       headers: { 'Content-type': 'multipart/form-data' },
-  //     })
-  //     .then(responseBody),
-  // putForm: (url, data) =>
-  //   axios
-  //     .put(url, data, {
-  //       headers: { 'Content-type': 'multipart/form-data' },
-  //     })
-  //     .then(responseBody),
+  post: (url, body) => axiosPrivate.post(url, body).then(responseBody),
+  put: (url, body) => axiosPrivate.put(url, body).then(responseBody),
+  delete: (url) => axiosPrivate.delete(url).then(responseBody),
+  postForm: (url, data) =>
+    axiosPrivate
+      .post(url, data, {
+        headers: { 'Content-type': 'multipart/form-data' },
+      })
+      .then(responseBody),
+  putForm: (url, data) =>
+    axiosPrivate
+      .put(url, data, {
+        headers: { 'Content-type': 'multipart/form-data' },
+      })
+      .then(responseBody),
 }
 
 const album = {
   getAlbum: () => requests.get('/album'),
 }
 
+const auth = {
+  // refreshAuth: () => requests.get('/user/refresh'),
+}
+
 const agentPrivate = {
   album,
+  auth,
 }
 
 export default agentPrivate
