@@ -3,10 +3,18 @@ const connection = require('./connection')
 function getUsers(db = connection) {
   return db('user').select()
 }
+
+function getUserRolesByUserId(userId, db = connection) {
+  return db('userRoles').select('role').where('userId', userId)
+}
 function createUser(newUser, db = connection) {
   return db('user')
-    .insert(newUser)
-    .then(() => db('user').select())
+    .insert({
+      username: newUser.username,
+      password: newUser.password,
+      email: newUser.email,
+    })
+    .then((newId) => createRolesByUserId(newUser.roles, newId[0]))
 }
 function saveToken(username, refreshToken, db = connection) {
   return db('user')
@@ -18,8 +26,18 @@ function deleteToken(username, db = connection) {
   return db('user').update('refreshToken', null).where('username', username)
 }
 
+function createRolesByUserId(roles, userId, db = connection) {
+  const dataToInsert = []
+
+  roles.map((role) => {
+    dataToInsert.push({ role: role, userId: userId })
+  })
+  return db('userRoles').insert(dataToInsert)
+}
+
 module.exports = {
   getUsers,
+  getUserRolesByUserId,
   createUser,
   saveToken,
   deleteToken,

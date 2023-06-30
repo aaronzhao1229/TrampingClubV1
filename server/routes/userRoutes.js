@@ -2,6 +2,7 @@ const express = require('express')
 const bcrypt = require('bcrypt')
 const db = require('../db/userDb')
 const jwt = require('jsonwebtoken')
+
 require('dotenv').config()
 const router = express.Router()
 
@@ -23,11 +24,23 @@ router.post('/createUser', async (req, res) => {
   try {
     // encrypt the password
     const hashedPassword = await bcrypt.hash(password, 10)
-    await db.createUser({
-      username: username,
-      password: hashedPassword,
-      email: email,
-    })
+    let newUser = {}
+    if (username === 'lambdaAdmin') {
+      newUser = {
+        username: username,
+        password: hashedPassword,
+        email: email,
+        roles: ['admin', 'member'],
+      }
+    } else {
+      newUser = {
+        username: username,
+        password: hashedPassword,
+        email: email,
+        roles: ['member'],
+      }
+    }
+    await db.createUser(newUser)
 
     res.status(201).json({ success: `New user ${username} created!` })
   } catch (error) {
@@ -52,6 +65,8 @@ router.post('/login', async (req, res) => {
   const match = await bcrypt.compare(password, foundUser.password)
   if (match) {
     // create JWT
+    const userRolesObject = await db.getUserRolesByUserId(foundUser.id)
+    console.log(userRolesObject)
     const accessToken = jwt.sign(
       {
         username: foundUser.username,
