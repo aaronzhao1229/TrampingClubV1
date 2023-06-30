@@ -1,6 +1,7 @@
 const express = require('express')
 const multer = require('multer')
 const verifyJWT = require('../middleware/verifyJWT')
+const verifyRoles = require('../middleware/verifyRoles')
 const crypto = require('crypto')
 const { uploadImageToS3, getImageFromS3, deleteImageFromS3 } = require('../s3')
 const db = require('../db/albumDb')
@@ -104,23 +105,28 @@ router.delete('/deleteAlbum/:albumId', verifyJWT, async (req, res) => {
   }
 })
 
-router.patch('/editAlbum/:albumId', verifyJWT, (req, res) => {
-  const album = req.body
-  const editedAlbum = {
-    albumId: req.params.albumId,
-    albumName: album.tripName,
-    tripDate: album.tripDate,
-  }
+router.patch(
+  '/editAlbum/:albumId',
+  verifyJWT,
+  verifyRoles('admin'),
+  (req, res) => {
+    const album = req.body
+    const editedAlbum = {
+      albumId: req.params.albumId,
+      albumName: album.tripName,
+      tripDate: album.tripDate,
+    }
 
-  db.editAlbum(editedAlbum)
-    .then(() => {
-      return res.json('album has been updated')
-    })
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ message: 'Something went wrong' })
-    })
-})
+    db.editAlbum(editedAlbum)
+      .then(() => {
+        return res.json('album has been updated')
+      })
+      .catch((err) => {
+        console.log(err)
+        res.status(500).json({ message: 'Something went wrong' })
+      })
+  }
+)
 
 router.get('/', async (req, res) => {
   try {

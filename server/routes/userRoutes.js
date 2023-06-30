@@ -66,13 +66,17 @@ router.post('/login', async (req, res) => {
   if (match) {
     // create JWT
     const userRolesObject = await db.getUserRolesByUserId(foundUser.id)
-    console.log(userRolesObject)
+    const userRoles = userRolesObject.map((role) => role.role)
+
     const accessToken = jwt.sign(
       {
-        username: foundUser.username,
+        UserInfo: {
+          username: foundUser.username,
+          roles: userRoles,
+        },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: '10s' }
+      { expiresIn: '30s' }
     )
     const refreshToken = jwt.sign(
       {
@@ -111,17 +115,24 @@ router.get('/refresh', async (req, res) => {
   if (!foundUser) return res.sendStatus(403) // Forbidden
 
   // evaluate jwt
-  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-    if (err || foundUser.username !== decoded.username)
-      return res.sendStatus(403)
-    const accessToken = jwt.sign(
-      { username: decoded.username },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: '15s' }
-    )
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    async (err, decoded) => {
+      if (err || foundUser.username !== decoded.username)
+        return res.sendStatus(403)
 
-    res.json({ accessToken })
-  })
+      const userRolesObject = await db.getUserRolesByUserId(foundUser.id)
+      const userRoles = userRolesObject.map((role) => role.role)
+      const accessToken = jwt.sign(
+        { UserInfo: { username: decoded.username, roles: userRoles } },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '30s' }
+      )
+
+      res.json({ accessToken })
+    }
+  )
 })
 
 router.get('/logout', async (req, res) => {
