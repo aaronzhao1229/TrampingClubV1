@@ -93,7 +93,7 @@ router.post('/login', async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     })
     // send accessToken with json which front end developer can get
-    res.json({ accessToken })
+    res.json({ accessToken, userRoles })
   } else {
     res.sendStatus(401)
   }
@@ -130,7 +130,7 @@ router.get('/refresh', async (req, res) => {
         { expiresIn: '30s' }
       )
 
-      res.json({ accessToken })
+      res.json({ accessToken, userRoles })
     }
   )
 })

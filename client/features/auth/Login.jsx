@@ -26,8 +26,9 @@ export default function Login() {
   async function onSubmit(values) {
     try {
       const username = values.username
-      // const userData = await login(values)
+
       const userData = await agent.auth.login(values)
+      console.log(userData)
       dispatch(setCredentials({ ...userData, username }))
       navigate(location.state?.from || '/')
     } catch (error) {

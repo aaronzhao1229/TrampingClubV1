@@ -23,7 +23,7 @@ export const router = createBrowserRouter([
         element: <PersistLogin />,
         children: [
           {
-            element: <RequiredAuth />,
+            element: <RequiredAuth allowedRoles={['admin']} />,
             children: [
               { path: 'manageAlbum', element: <ManageAlbum /> },
               { path: 'createAlbum', element: <CreateAlbum /> },

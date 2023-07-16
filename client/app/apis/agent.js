@@ -30,8 +30,7 @@ const programmes = {
 }
 
 const auth = {
-  login: (userInfo) =>
-    requests.post('/user/login', userInfo).then(responseBody),
+  login: (userInfo) => requests.post('/user/login', userInfo),
   refreshAuth: () => requests.get('/user/refresh'),
 }
 

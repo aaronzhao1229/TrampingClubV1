@@ -5,7 +5,7 @@ import { Container, Spinner, Form, Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { setAlbum } from './albumSlice'
 import { useNavigate } from 'react-router-dom'
-import useRefreshToken from '../../app/hooks/useRefreshToken'
+
 import agentPrivate from '../../app/apis/agentPrivate'
 
 const initState = {
@@ -17,7 +17,7 @@ const initState = {
 export default function CreateAlbum() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const refresh = useRefreshToken()
+
   const {
     register,
     handleSubmit,
@@ -131,10 +131,6 @@ export default function CreateAlbum() {
           )}
         </Button>
       </Form>
-
-      <Button variant="primary" type="submit" onClick={refresh}>
-        Submit
-      </Button>
     </Container>
   )
 }
