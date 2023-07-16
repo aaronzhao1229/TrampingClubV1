@@ -13,6 +13,7 @@ import CreateProgramme from '../../features/programmes/CreateProgramme'
 import Login from '../../features/auth/Login'
 import RequiredAuth from './RequiredAuth'
 import PersistLogin from '../components/PersistLogin'
+import Admin from '../../features/admin/Admin'
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
           {
             element: <RequiredAuth allowedRoles={['admin']} />,
             children: [
+              { path: 'admin', element: <Admin /> },
               { path: 'manageAlbum', element: <ManageAlbum /> },
               { path: 'createAlbum', element: <CreateAlbum /> },
               { path: 'updateProgramme', element: <CreateProgramme /> },
