@@ -1,7 +1,9 @@
 const express = require('express')
 const bcrypt = require('bcrypt')
+const crypto = require('crypto')
 const db = require('../db/userDb')
 const jwt = require('jsonwebtoken')
+const { sendEmailForgetPassword } = require('../ses')
 
 require('dotenv').config()
 const router = express.Router()
@@ -154,6 +156,15 @@ router.get('/logout', async (req, res) => {
   await db.deleteToken(foundUser.username)
   res.clearCookie('jwt', { httpOnly: true }) // add this flag in production mode, secure: true - only serves on https
   res.sendStatus(204)
+})
+
+router.post('/forgetPassword', async (req, res) => {
+  let resetToken = crypto.randomBytes(32).toString('hex')
+  const hash = await bcrypt.hash(resetToken, 10)
+  // save the token and dateNow to DB
+  await db.saveResetPasswordToken(req.body.email, hash)
+  await sendEmailForgetPassword(req.body.email, resetToken)
+  res.send('Email sent')
 })
 
 module.exports = router

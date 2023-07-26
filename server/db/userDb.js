@@ -16,6 +16,7 @@ function createUser(newUser, db = connection) {
     })
     .then((newId) => createRolesByUserId(newUser.roles, newId[0]))
 }
+
 function saveToken(username, refreshToken, db = connection) {
   return db('user')
     .update('refreshToken', refreshToken)
@@ -35,10 +36,17 @@ function createRolesByUserId(roles, userId, db = connection) {
   return db('userRoles').insert(dataToInsert)
 }
 
+function saveResetPasswordToken(email, resetPasswordToken, db = connection) {
+  return db('user')
+    .update({ resetPasswordToken: resetPasswordToken, resetDate: Date.now() })
+    .where('email', email)
+}
+
 module.exports = {
   getUsers,
   getUserRolesByUserId,
   createUser,
   saveToken,
   deleteToken,
+  saveResetPasswordToken,
 }
