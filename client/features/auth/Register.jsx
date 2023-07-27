@@ -6,14 +6,13 @@ import { useForm } from 'react-hook-form'
 
 import { toast } from 'react-toastify'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { setCredentials } from './authSlice'
+
 import agent from '../../app/apis/agent'
 
-export default function Login() {
+export default function Register() {
   const navigate = useNavigate()
   const location = useLocation()
-  const dispatch = useDispatch()
+
   const {
     register,
     handleSubmit,
@@ -25,21 +24,23 @@ export default function Login() {
 
   async function onSubmit(values) {
     try {
-      const username = values.username
-
-      const userData = await agent.auth.login(values)
-      console.log(userData)
-      dispatch(setCredentials({ ...userData, username }))
-      navigate(location.state?.from || '/')
+      const userInfo = {
+        username: values.username,
+        password: values.password,
+        email: values.email,
+      }
+      await agent.auth.register(userInfo)
+      toast.success('You have registered successfully, please log in.')
+      navigate('/login')
     } catch (error) {
       if (!error.response) {
         toast.error('No server response')
       } else if (error.response.status === 400) {
-        toast.error('Missing Username or Password')
+        toast.error('Missing information')
       } else if (error.response.status === 401) {
         toast.error('Unauthorized')
       } else {
-        toast.error('Login Failed')
+        toast.error('Register Failed')
       }
     }
   }
@@ -49,7 +50,7 @@ export default function Login() {
         <Col sm={{ span: 6, offset: 3 }}>
           <Card>
             <Card.Header as="h4" className="text-center">
-              Login
+              Register
             </Card.Header>
             <Card.Body>
               <Form onSubmit={handleSubmit(onSubmit)}>
@@ -68,12 +69,39 @@ export default function Login() {
                   )}
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicName">
+                <Form.Group className="mb-3" controlId="email">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="text"
+                    {...register('email', {
+                      required: 'Email is required',
+                      pattern: {
+                        value:
+                          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                        message: 'Not a valid email address',
+                      },
+                    })}
+                  />
+                  {errors.email && (
+                    <Form.Text className="text-danger">
+                      {errors.email.message}
+                    </Form.Text>
+                  )}
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="password">
                   <Form.Label>Password</Form.Label>
                   <Form.Control
                     type="password"
                     {...register('password', {
                       required: 'Password is required',
+                      pattern: {
+                        value:
+                          /(?=^.{6,12}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$/,
+
+                        message:
+                          'The password must contain 6 - 12 characters with at least one uppercase letter, at least one lowercase letter, at least a number and at least one special characters',
+                      },
                     })}
                   />
                   {errors.password && (
@@ -82,10 +110,25 @@ export default function Login() {
                     </Form.Text>
                   )}
                 </Form.Group>
-                <Card.Link href="/forgetPassword">Forget password?</Card.Link>
-                <Card.Link href="/register">
-                  {"Don't have an account? Register here"}
-                </Card.Link>
+
+                <Form.Group className="mb-3" controlId="confirmPassword">
+                  <Form.Label>Confirm Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    {...register('confirmPassword', {
+                      required: 'Please confirm your password',
+                      validate: (value, formValues) =>
+                        value === formValues.password ||
+                        'two passwords do not match',
+                    })}
+                  />
+                  {errors.confirmPassword && (
+                    <Form.Text className="text-danger">
+                      {errors.confirmPassword.message}
+                    </Form.Text>
+                  )}
+                </Form.Group>
+
                 <Button variant="primary" type="submit" disabled={!isValid}>
                   {isSubmitting ? (
                     <Spinner

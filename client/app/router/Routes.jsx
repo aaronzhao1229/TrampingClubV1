@@ -15,6 +15,7 @@ import ForgetPassword from '../../features/auth/ForgetPassword'
 import RequiredAuth from './RequiredAuth'
 import PersistLogin from '../components/PersistLogin'
 import Admin from '../../features/admin/Admin'
+import Register from '../../features/auth/Register'
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,7 @@ export const router = createBrowserRouter([
       { path: 'album/:albumId', element: <SingleAlbum /> },
       { path: 'contactus', element: <ContactUs /> },
       { path: 'login', element: <Login /> },
+      { path: 'register', element: <Register /> },
       { path: 'forgetPassword', element: <ForgetPassword /> },
     ],
   },

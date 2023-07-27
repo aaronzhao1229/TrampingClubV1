@@ -31,6 +31,7 @@ const programmes = {
 
 const auth = {
   login: (userInfo) => requests.post('/user/login', userInfo),
+  register: (values) => requests.post('/user/createUser', values),
   refreshAuth: () => requests.get('/user/refresh'),
   forgetPassword: (email) => requests.post('/user/forgetPassword', email),
 }
