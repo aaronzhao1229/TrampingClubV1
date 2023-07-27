@@ -5,13 +5,12 @@ import Button from 'react-bootstrap/Button'
 import { useForm } from 'react-hook-form'
 
 import { toast } from 'react-toastify'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import agent from '../../app/apis/agent'
 
 export default function Register() {
   const navigate = useNavigate()
-  const location = useLocation()
 
   const {
     register,

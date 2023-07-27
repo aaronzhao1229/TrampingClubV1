@@ -9,6 +9,7 @@ import CreateAlbum from '../../features/admin/CreateAlbum'
 import ManageAlbum from '../../features/admin/ManageAlbum'
 import ManageSingleAlbum from '../../features/admin/ManageSingleAlbum'
 import TrampProgramme from '../../features/programmes/TrampProgramme'
+import WalkProgramme from '../../features/programmes/WalkProgramme'
 import CreateProgramme from '../../features/programmes/CreateProgramme'
 import Login from '../../features/auth/Login'
 import ForgetPassword from '../../features/auth/ForgetPassword'
@@ -39,6 +40,7 @@ export const router = createBrowserRouter([
       },
       { path: 'about', element: <About /> },
       { path: 'tramp', element: <TrampProgramme /> },
+      { path: 'walk', element: <WalkProgramme /> },
       { path: 'album', element: <Album /> },
       { path: 'album/:albumId', element: <SingleAlbum /> },
       { path: 'contactus', element: <ContactUs /> },

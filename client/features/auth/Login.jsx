@@ -82,11 +82,13 @@ export default function Login() {
                     </Form.Text>
                   )}
                 </Form.Group>
-                <Card.Link href="/forgetPassword">Forget password?</Card.Link>
-                <Card.Link href="/register">
-                  {"Don't have an account? Register here"}
-                </Card.Link>
-                <Button variant="primary" type="submit" disabled={!isValid}>
+
+                <Button
+                  variant="primary"
+                  type="submit"
+                  disabled={!isValid}
+                  style={{ marginBottom: 2 }}
+                >
                   {isSubmitting ? (
                     <Spinner
                       as="span"
@@ -100,6 +102,10 @@ export default function Login() {
                   )}
                 </Button>
               </Form>
+              <Card.Link href="/forgetPassword">Forget password?</Card.Link>
+              <Card.Link href="/register">
+                {"Don't have an account? Register here"}
+              </Card.Link>
             </Card.Body>
           </Card>
         </Col>
