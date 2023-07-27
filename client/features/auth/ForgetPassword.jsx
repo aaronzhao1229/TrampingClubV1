@@ -3,17 +3,13 @@ import React from 'react'
 import { Card, Container, Spinner, Row, Col } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import { useForm } from 'react-hook-form'
-
 import { toast } from 'react-toastify'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { setCredentials } from './authSlice'
+import { useNavigate } from 'react-router-dom'
 import agent from '../../app/apis/agent'
 
-export default function Login() {
+export default function ForgetPassword() {
   const navigate = useNavigate()
-  const location = useLocation()
-  const dispatch = useDispatch()
+
   const {
     register,
     handleSubmit,
@@ -25,17 +21,15 @@ export default function Login() {
 
   async function onSubmit(values) {
     try {
-      const username = values.username
-
-      const userData = await agent.auth.login(values)
-      console.log(userData)
-      dispatch(setCredentials({ ...userData, username }))
-      navigate(location.state?.from || '/')
+      console.log(values)
+      await agent.auth.forgetPassword(values)
+      toast.success('We have sent you an email to reset your password')
+      navigate('/')
     } catch (error) {
       if (!error.response) {
         toast.error('No server response')
       } else if (error.response.status === 400) {
-        toast.error('Missing Username or Password')
+        toast.error('Invalid email address')
       } else if (error.response.status === 401) {
         toast.error('Unauthorized')
       } else {
@@ -48,41 +42,31 @@ export default function Login() {
       <Row>
         <Col sm={{ span: 6, offset: 3 }}>
           <Card>
-            <Card.Header as="h4" className="text-center">
-              Login
+            <Card.Header as="h5" className="text-center">
+              Enter the email address you registered
             </Card.Header>
             <Card.Body>
               <Form onSubmit={handleSubmit(onSubmit)}>
-                <Form.Group className="mb-3" controlId="username">
-                  <Form.Label>Username</Form.Label>
+                <Form.Group className="mb-3" controlId="email">
+                  <Form.Label>Email</Form.Label>
                   <Form.Control
-                    type="text"
-                    {...register('username', {
-                      required: 'Username is required',
+                    type="email"
+                    placeholder="Your email"
+                    {...register('email', {
+                      required: 'Email is required',
+                      pattern: {
+                        value:
+                          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                        message: 'Not a valid email address',
+                      },
                     })}
                   />
-                  {errors.username && (
+                  {errors.email && (
                     <Form.Text className="text-danger">
-                      {errors.username.message}
+                      {errors.email.message}
                     </Form.Text>
                   )}
                 </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formBasicName">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    {...register('password', {
-                      required: 'Password is required',
-                    })}
-                  />
-                  {errors.password && (
-                    <Form.Text className="text-danger">
-                      {errors.password.message}
-                    </Form.Text>
-                  )}
-                </Form.Group>
-                <Card.Link href="/forgetPassword">Forget password?</Card.Link>
                 <Button variant="primary" type="submit" disabled={!isValid}>
                   {isSubmitting ? (
                     <Spinner

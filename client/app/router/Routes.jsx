@@ -11,6 +11,7 @@ import ManageSingleAlbum from '../../features/admin/ManageSingleAlbum'
 import TrampProgramme from '../../features/programmes/TrampProgramme'
 import CreateProgramme from '../../features/programmes/CreateProgramme'
 import Login from '../../features/auth/Login'
+import ForgetPassword from '../../features/auth/ForgetPassword'
 import RequiredAuth from './RequiredAuth'
 import PersistLogin from '../components/PersistLogin'
 import Admin from '../../features/admin/Admin'
@@ -41,6 +42,7 @@ export const router = createBrowserRouter([
       { path: 'album/:albumId', element: <SingleAlbum /> },
       { path: 'contactus', element: <ContactUs /> },
       { path: 'login', element: <Login /> },
+      { path: 'forgetPassword', element: <ForgetPassword /> },
     ],
   },
 ])

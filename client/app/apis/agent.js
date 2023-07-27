@@ -32,6 +32,7 @@ const programmes = {
 const auth = {
   login: (userInfo) => requests.post('/user/login', userInfo),
   refreshAuth: () => requests.get('/user/refresh'),
+  forgetPassword: (email) => requests.post('/user/forgetPassword', email),
 }
 
 const album = {
