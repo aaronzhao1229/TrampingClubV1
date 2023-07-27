@@ -160,11 +160,37 @@ router.get('/logout', async (req, res) => {
 
 router.post('/forgetPassword', async (req, res) => {
   let resetToken = crypto.randomBytes(32).toString('hex')
+  console.log(resetToken)
   const hash = await bcrypt.hash(resetToken, 10)
   // save the token and dateNow to DB
   await db.saveResetPasswordToken(req.body.email, hash)
   await sendEmailForgetPassword(req.body.email, resetToken)
   res.send('Email sent')
+})
+
+router.post('/resetPassword', async (req, res) => {
+  const { email, password, token } = req.body
+  const tokenInDb = await db.findResetTokenByEmail(email)
+
+  if (!tokenInDb) return res.sendStatus(404)
+
+  if (tokenInDb.resetDate + 3600 * 1000 * 0.5 < Date.now())
+    return res.sendStatus(498)
+  // await sendEmailForgetPassword(req.body.email, resetToken)
+  const isValid = await bcrypt.compare(token, tokenInDb.resetPasswordToken)
+
+  if (!isValid) return res.sendStatus(498)
+
+  const hashedPassword = await bcrypt.hash(password, 10)
+
+  try {
+    await db.resetPassword(email, hashedPassword)
+
+    res.send('password reset')
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Something went wrong' })
+  }
 })
 
 module.exports = router

@@ -42,6 +42,23 @@ function saveResetPasswordToken(email, resetPasswordToken, db = connection) {
     .where('email', email)
 }
 
+function findResetTokenByEmail(email, db = connection) {
+  return db('user')
+    .select('resetPasswordToken', 'resetDate')
+    .where('email', email)
+    .first()
+}
+
+function resetPassword(email, password, db = connection) {
+  return db('user')
+    .update({ password: password, resetPasswordToken: null })
+    .where('email', email)
+}
+
+// function deleteResetToken(email, db = connection) {
+//   return db('user').update('resetPasswordToken', null).where('email', email)
+// }
+
 module.exports = {
   getUsers,
   getUserRolesByUserId,
@@ -49,4 +66,7 @@ module.exports = {
   saveToken,
   deleteToken,
   saveResetPasswordToken,
+  findResetTokenByEmail,
+  resetPassword,
+  
 }
