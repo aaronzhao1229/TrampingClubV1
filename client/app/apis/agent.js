@@ -34,6 +34,7 @@ const auth = {
   register: (values) => requests.post('/user/createUser', values),
   refreshAuth: () => requests.get('/user/refresh'),
   forgetPassword: (email) => requests.post('/user/forgetPassword', email),
+  resetPassword: (values) => requests.post('/user/resetPassword', values),
 }
 
 const album = {

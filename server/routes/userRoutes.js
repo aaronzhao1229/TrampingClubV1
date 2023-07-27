@@ -160,7 +160,7 @@ router.get('/logout', async (req, res) => {
 
 router.post('/forgetPassword', async (req, res) => {
   let resetToken = crypto.randomBytes(32).toString('hex')
-  console.log(resetToken)
+
   const hash = await bcrypt.hash(resetToken, 10)
   // save the token and dateNow to DB
   await db.saveResetPasswordToken(req.body.email, hash)

@@ -17,6 +17,7 @@ import RequiredAuth from './RequiredAuth'
 import PersistLogin from '../components/PersistLogin'
 import Admin from '../../features/admin/Admin'
 import Register from '../../features/auth/Register'
+import ResetPassword from '../../features/auth/ResetPassword'
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +48,7 @@ export const router = createBrowserRouter([
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
       { path: 'forgetPassword', element: <ForgetPassword /> },
+      { path: 'resetPassword/*', element: <ResetPassword /> },
     ],
   },
 ])
