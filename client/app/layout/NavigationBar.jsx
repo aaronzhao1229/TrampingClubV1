@@ -13,7 +13,7 @@ export default function NavigationBar() {
     navigate('/')
   }
   return (
-    <Navbar bg="primary" variant="dark">
+    <Navbar bg="primary" variant="dark" style={{ marginBottom: 20 }}>
       <Container>
         <Navbar.Brand href="#home">
           <img
