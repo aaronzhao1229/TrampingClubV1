@@ -33,8 +33,9 @@ export default function ManageSingleAlbum() {
               className="photos"
               src={photo.url}
               onClick={() => window.open(photo.url)}
+              style={{ marginBottom: 2 }}
             />
-            <Button onClick={() => deletePhoto(photo.photoId)}>
+            <Button variant="danger" onClick={() => deletePhoto(photo.photoId)}>
               {photos.status === 'pendingRemovePhoto' + photo.photoId ? (
                 <Spinner
                   as="span"
@@ -44,7 +45,7 @@ export default function ManageSingleAlbum() {
                   aria-hidden="true"
                 />
               ) : (
-                'Delete the photo'
+                'Delete photo'
               )}
             </Button>
           </Col>
