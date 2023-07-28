@@ -27,27 +27,34 @@ export default function ManageAlbum() {
               <Card.Body>
                 <Card.Title>{trip.albumName}</Card.Title>
                 <Card.Text>{convertDateToString(trip.tripDate)}</Card.Text>
-                <Button
-                  onClick={() => navigate(`/manageAlbum/${trip.albumId}`)}
-                  variant="primary"
-                >
-                  Edit Album
-                </Button>
-                <Button
-                  onClick={() => dispatch(removeAlbumAsync(trip.albumId))}
-                >
-                  {album.status === 'pendingRemoveAlbum' + trip.albumId ? (
-                    <Spinner
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                    />
-                  ) : (
-                    'Delete album'
-                  )}
-                </Button>
+                <Row>
+                  <Col>
+                    <Button
+                      onClick={() => navigate(`/manageAlbum/${trip.albumId}`)}
+                      variant="primary"
+                    >
+                      Edit
+                    </Button>
+                  </Col>
+                  <Col>
+                    <Button
+                      variant="danger"
+                      onClick={() => dispatch(removeAlbumAsync(trip.albumId))}
+                    >
+                      {album.status === 'pendingRemoveAlbum' + trip.albumId ? (
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                      ) : (
+                        'Delete'
+                      )}
+                    </Button>
+                  </Col>
+                </Row>
               </Card.Body>
             </Card>
           </Col>

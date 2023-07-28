@@ -1,6 +1,6 @@
 const express = require('express')
 
-const sendEmail = require('../ses')
+const { sendEmail } = require('../ses')
 
 const router = express.Router()
 

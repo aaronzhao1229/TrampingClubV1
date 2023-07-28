@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import {
-  deletePhotoByPhotoId,
-  getPhotosByAlbumId,
-} from '../../app/apis/albumApi'
+
+import agent from '../../app/apis/agent'
+import agentPrivate from '../../app/apis/agentPrivate'
 
 const initialState = {
   status: 'idle',
@@ -14,7 +13,7 @@ export const fetchPhotosAsync = createAsyncThunk(
   'album/fetchPhotosAsync',
   async (albumId, thunkAPI) => {
     try {
-      const response = await getPhotosByAlbumId(albumId)
+      const response = await agent.album.getPhotosByAlbumId(albumId)
       return response
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message })
@@ -26,7 +25,8 @@ export const removePhotoAsync = createAsyncThunk(
   'ablum/removePhotoAsync',
   async (photoId, thunkAPI) => {
     try {
-      const response = await deletePhotoByPhotoId(photoId)
+      // const response = await deletePhotoByPhotoId(photoId)
+      const response = await agentPrivate.album.deletePhotoByPhotoId(photoId)
       return response
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message })

@@ -5,7 +5,7 @@ import { Container, Spinner, Form, Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { setProgrammes } from './programmeSlice'
 import { useNavigate } from 'react-router-dom'
-import { updateProgramme } from '../../app/apis/programmeApi'
+import agentPrivate from '../../app/apis/agentPrivate'
 import { toast } from 'react-toastify'
 
 const initState = {
@@ -40,10 +40,11 @@ export default function CreateProgramme() {
     formData.append('category', values.category)
     formData.append('file', values.file.item(0))
 
-    return updateProgramme(formData)
+    return agentPrivate.programmes
+      .uploadProgramme(formData)
       .then(() => {
         dispatch(setProgrammes())
-        toast.success('Album info has been saved.')
+        toast.success('Programme has been updated.')
         navigate('/')
       })
       .catch((err) => handleError(err))
