@@ -123,7 +123,7 @@ router.get('/refresh', async (req, res) => {
     async (err, decoded) => {
       if (err || foundUser.username !== decoded.username)
         return res.sendStatus(403)
-
+      const username = decoded.username
       const userRolesObject = await db.getUserRolesByUserId(foundUser.id)
       const userRoles = userRolesObject.map((role) => role.role)
       const accessToken = jwt.sign(
@@ -132,7 +132,7 @@ router.get('/refresh', async (req, res) => {
         { expiresIn: '30s' }
       )
 
-      res.json({ accessToken, userRoles })
+      res.json({ accessToken, userRoles, username })
     }
   )
 })
