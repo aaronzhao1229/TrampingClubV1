@@ -3,8 +3,11 @@ import { Container, Nav, Navbar, Button } from 'react-bootstrap'
 import React from 'react'
 import useLogout from '../hooks/useLogout'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 export default function NavigationBar() {
+  const { username } = useSelector((state) => state.auth)
+
   const logout = useLogout()
   const navigate = useNavigate()
 
@@ -30,9 +33,11 @@ export default function NavigationBar() {
           <Nav.Link href="/walk">Walk</Nav.Link>
           <Nav.Link href="/album">Album</Nav.Link>
           <Nav.Link href="/contactus">Contact us</Nav.Link>
-          
-          <Nav.Link href="/login">Login</Nav.Link>
-          <Button onClick={signout}>Logout</Button>
+          {username === null ? (
+            <Nav.Link href="/login">Login</Nav.Link>
+          ) : (
+            <Button onClick={signout}>Logout</Button>
+          )}
         </Nav>
       </Container>
     </Navbar>

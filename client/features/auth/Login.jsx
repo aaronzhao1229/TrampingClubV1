@@ -14,6 +14,7 @@ export default function Login() {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useDispatch()
+
   const {
     register,
     handleSubmit,
@@ -28,7 +29,7 @@ export default function Login() {
       const username = values.username
 
       const userData = await agent.auth.login(values)
-      console.log(userData)
+
       dispatch(setCredentials({ ...userData, username }))
       navigate(location.state?.from || '/')
     } catch (error) {
@@ -43,6 +44,7 @@ export default function Login() {
       }
     }
   }
+
   return (
     <Container fluid style={{ marginTop: 10 }}>
       <Row>
