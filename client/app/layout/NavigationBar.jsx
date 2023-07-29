@@ -30,7 +30,7 @@ export default function NavigationBar() {
           <Nav.Link href="/walk">Walk</Nav.Link>
           <Nav.Link href="/album">Album</Nav.Link>
           <Nav.Link href="/contactus">Contact us</Nav.Link>
-          <Nav.Link href="/admin">Admin</Nav.Link>
+          
           <Nav.Link href="/login">Login</Nav.Link>
           <Button onClick={signout}>Logout</Button>
         </Nav>

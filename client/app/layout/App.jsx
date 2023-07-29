@@ -6,6 +6,7 @@ import NavigationBar from './NavigationBar'
 import { ToastContainer } from 'react-toastify'
 import { fetchProgrammesAsync } from '../../features/programmes/programmeSlice'
 import Home from '../../features/home/Home'
+import Footer from './Footer'
 
 function App() {
   const dispatch = useDispatch()
@@ -27,6 +28,7 @@ function App() {
             <Outlet />
           </Container>
         )}
+        <Footer />
       </div>
     </>
   )
