@@ -6,10 +6,12 @@ import {
   faMeetup,
   faInstagram,
 } from '@fortawesome/free-brands-svg-icons'
+import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
     <footer className="font-small blue pt-4">
+      <hr />
       <Container>
         <Row>
           <Col sm={{ span: 2, offset: 3 }} style={{ textAlign: 'center' }}>
@@ -51,12 +53,10 @@ export default function Footer() {
               © 2023 Copyright: Lambda Trampers and Latte Walkers
             </div>
           </Col>
-        </Row>
-        <Row>
-          <Col sm={{ span: 6, offset: 3 }} style={{ textAlign: 'center' }}>
-            <Nav>
-              <Nav.Link href="/admin">Admin</Nav.Link>
-            </Nav>
+          <Col sm={{ span: 3 }}>
+            <div className="text-end py-3">
+              <Link to="/admin">Admin</Link>
+            </div>
           </Col>
         </Row>
       </Container>
