@@ -18,6 +18,7 @@ const store = configureStore({
     programmes: programmesSlice.reducer,
     auth: authSlice.reducer,
   },
+  // devTools: false,
 })
 
 export default store
