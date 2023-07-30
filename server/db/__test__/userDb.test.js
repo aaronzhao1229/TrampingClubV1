@@ -43,3 +43,21 @@ describe('getUserRolesByUserId', () => {
     })
   })
 })
+
+const newUser = {
+  username: 'testNew',
+  password: '123456',
+  email: 'test123@test.com',
+  roles: ['member'],
+}
+
+describe('create a user', () => {
+  it('create a user', async () => {
+    await createUser(newUser, testDb)
+
+    const res = await getUsers(testDb)
+
+    expect(res).toHaveLength(2)
+    expect(res[1].username).toBe('testNew')
+  })
+})

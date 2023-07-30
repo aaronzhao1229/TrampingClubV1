@@ -14,7 +14,7 @@ function createUser(newUser, db = connection) {
       password: newUser.password,
       email: newUser.email,
     })
-    .then((newId) => createRolesByUserId(newUser.roles, newId[0]))
+    .then((newId) => createRolesByUserId(newUser.roles, newId[0], db))
 }
 
 function saveToken(username, refreshToken, db = connection) {
@@ -68,5 +68,4 @@ module.exports = {
   saveResetPasswordToken,
   findResetTokenByEmail,
   resetPassword,
-  
 }
