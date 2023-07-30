@@ -2,7 +2,16 @@ const knex = require('knex')
 const testConfig = require('../knexfile').test
 const testDb = knex(testConfig)
 
-const { getUsers } = require('../userDb')
+const {
+  getUsers,
+  getUserRolesByUserId,
+  createUser,
+  saveToken,
+  deleteToken,
+  saveResetPasswordToken,
+  findResetTokenByEmail,
+  resetPassword,
+} = require('../userDb')
 
 beforeAll(() => {
   return testDb.migrate.latest()
@@ -22,6 +31,15 @@ describe('getUsers', () => {
     return getUsers(testDb).then((res) => {
       expect(res).toHaveLength(1)
       expect(res[0].username).toBe('test1234')
+    })
+  })
+})
+
+describe('getUserRolesByUserId', () => {
+  it('get user by userId', () => {
+    return getUserRolesByUserId(1, testDb).then((res) => {
+      expect(res).toHaveLength(2)
+      expect(res[0].role).toBe('admin')
     })
   })
 })
