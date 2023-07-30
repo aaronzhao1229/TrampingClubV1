@@ -11,9 +11,7 @@ const router = express.Router()
 router.post('/createUser', async (req, res) => {
   const { username, password, email } = req.body
   if (!username || !password || !email)
-    return res
-      .status(400)
-      .json({ message: 'Username, password and email are required.' })
+    return res.status(400).send('Username, password and email are required.')
 
   const existingUsers = await db.getUsers()
   const duplicateUsername = existingUsers.find(
@@ -44,7 +42,7 @@ router.post('/createUser', async (req, res) => {
     }
     await db.createUser(newUser)
 
-    res.status(201).json({ success: `New user ${username} created!` })
+    res.status(201).send(`New user ${username} created!`)
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: 'Something went wrong' })
