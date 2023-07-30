@@ -1,4 +1,4 @@
-// const path = require('path')
+const path = require('path')
 
 module.exports = {
   development: {
@@ -18,9 +18,15 @@ module.exports = {
       host: 'localhost',
       user: 'root',
       password: 'test1234!',
-      database: 'test',
+      database: 'unittest',
     },
     useNullAsDefault: true,
+    seeds: {
+      directory: path.join(__dirname, 'seeds'),
+    },
+    migrations: {
+      directory: path.join(__dirname, 'migrations'),
+    },
   },
 
   // to be updated
