@@ -63,6 +63,7 @@ router.post('/login', async (req, res) => {
 
   // evaluate password
   const match = await bcrypt.compare(password, foundUser.password)
+
   if (match) {
     // create JWT
     const userRolesObject = await db.getUserRolesByUserId(foundUser.id)
