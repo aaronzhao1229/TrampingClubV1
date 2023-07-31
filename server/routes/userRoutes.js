@@ -104,7 +104,7 @@ router.get('/refresh', async (req, res) => {
   const cookies = req.cookies
 
   if (!cookies?.jwt) return res.sendStatus(401)
-  // console.log(cookies.jwt)
+
   const refreshToken = cookies.jwt
 
   const existingUsers = await db.getUsers()
@@ -120,6 +120,7 @@ router.get('/refresh', async (req, res) => {
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
     async (err, decoded) => {
+      console.log('hey')
       if (err || foundUser.username !== decoded.username)
         return res.sendStatus(403)
       const username = decoded.username

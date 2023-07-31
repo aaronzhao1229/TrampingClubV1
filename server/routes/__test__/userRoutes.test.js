@@ -2,10 +2,22 @@ const request = require('supertest')
 const server = require('../../server')
 const db = require('../../db/userDb')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 jest.mock('../../db/userDb')
 jest.spyOn(console, 'error')
 jest.mock('bcrypt')
+
+// to be updated
+jest.mock('jsonwebtoken', () => ({
+  ...jest.requireActual('jsonwebtoken'), // import and retain the original functionalities
+  verify: jest.fn((token, secretOrPublicKey, options, callback) => {
+    return callback(null, { sub: 'user_id' })
+  }), // overwrite verify
+}))
+
+// const verify = jest.spyOn(jwt, 'verify')
+// verify.mockImplementation(() => () => ({ verified: 'true' }))
 
 afterEach(() => {
   console.error.mockReset()
@@ -17,12 +29,14 @@ const existingFakeUsers = [
     username: 'existing1',
     password: '123456',
     email: 'existing1@test.com',
+    refreshToken: 'abcdef',
   },
   {
     id: 2,
     username: 'existing2',
     password: '123456',
     email: 'existing2@test.com',
+    refreshToken: 'ghijkl',
   },
 ]
 
@@ -150,6 +164,40 @@ describe('login', () => {
       .send({ username: 'existing1', password: '123456' })
       .then((res) => {
         expect(res.status).toBe(401)
+      })
+  })
+})
+
+describe('/refresh', () => {
+  it('no jwt in cookie', () => {
+    return request(server)
+      .get('/api/v1/user/refresh')
+      .set('Cookie', ['password=12345667'])
+      .then((res) => {
+        expect(res.status).toBe(401)
+      })
+  })
+
+  it('no user found', () => {
+    db.getUsers.mockReturnValue(existingFakeUsers)
+    return request(server)
+      .get('/api/v1/user/refresh')
+      .set('Cookie', ['password=12345667', 'jwt=123456'])
+      .then((res) => {
+        expect(res.status).toBe(403)
+      })
+  })
+
+  it('verify sucessfully', () => {
+    const np = jest.fn()
+    db.getUsers.mockReturnValue(existingFakeUsers)
+    jwt.verify.mockImplementation(Promise.resolve(np))
+    db.getUserRolesByUserId.mockReturnValue(existingFakeRoles)
+    return request(server)
+      .get('/api/v1/user/refresh')
+      .set('Cookie', ['jwt=abcdef'])
+      .then(() => {
+        expect(0).toBe(0)
       })
   })
 })
