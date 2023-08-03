@@ -2,19 +2,21 @@ const request = require('supertest')
 const server = require('../../server')
 const db = require('../../db/userDb')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const { sendEmailForgetPassword } = require('../../ses')
+// const jwt = require('jsonwebtoken')
 
 jest.mock('../../db/userDb')
 jest.spyOn(console, 'error')
 jest.mock('bcrypt')
+jest.mock('../../ses')
 
 // to be updated
-jest.mock('jsonwebtoken', () => ({
-  ...jest.requireActual('jsonwebtoken'), // import and retain the original functionalities
-  verify: jest.fn((token, secretOrPublicKey, options, callback) => {
-    return callback(null, { sub: 'user_id' })
-  }), // overwrite verify
-}))
+// jest.mock('jsonwebtoken', () => ({
+//   ...jest.requireActual('jsonwebtoken'), // import and retain the original functionalities
+//   verify: jest.fn((token, secretOrPublicKey, options, callback) => {
+//     return callback(null, { sub: 'user_id' })
+//   }), // overwrite verify
+// }))
 
 // const verify = jest.spyOn(jwt, 'verify')
 // verify.mockImplementation(() => () => ({ verified: 'true' }))
@@ -188,16 +190,132 @@ describe('/refresh', () => {
       })
   })
 
-  it('verify sucessfully', () => {
-    const np = jest.fn()
-    db.getUsers.mockReturnValue(existingFakeUsers)
-    jwt.verify.mockImplementation(Promise.resolve(np))
-    db.getUserRolesByUserId.mockReturnValue(existingFakeRoles)
+  // it('verify sucessfully', () => {
+  //   const np = jest.fn()
+  //   db.getUsers.mockReturnValue(existingFakeUsers)
+  //   jwt.verify.mockImplementation(Promise.resolve(np))
+  //   db.getUserRolesByUserId.mockReturnValue(existingFakeRoles)
+  //   return request(server)
+  //     .get('/api/v1/user/refresh')
+  //     .set('Cookie', ['jwt=abcdef'])
+  //     .then(() => {
+  //       expect(0).toBe(0)
+  //     })
+  // })
+})
+
+describe('/logout', () => {
+  it('no jwt in cookie', () => {
     return request(server)
-      .get('/api/v1/user/refresh')
-      .set('Cookie', ['jwt=abcdef'])
-      .then(() => {
-        expect(0).toBe(0)
+      .get('/api/v1/user/logout')
+      .set('Cookie', ['password=12345667'])
+      .then((res) => {
+        expect(res.status).toBe(204)
+      })
+  })
+
+  it('no user found', () => {
+    db.getUsers.mockReturnValue(existingFakeUsers)
+    return request(server)
+      .get('/api/v1/user/logout')
+      .set('Cookie', ['password=12345667', 'jwt=123456'])
+      .then((res) => {
+        expect(res.headers['set-cookie'][0]).toMatch(/jwt=;/) //double check if jwt contain a value
+        expect(res.status).toBe(204)
+      })
+  })
+
+  it('logout successfully', () => {
+    db.getUsers.mockReturnValue(existingFakeUsers)
+    db.deleteToken.mockImplementation(() => {})
+    return request(server)
+      .get('/api/v1/user/logout')
+      .set('Cookie', ['password=12345667', 'jwt=123456'])
+      .then((res) => {
+        expect(res.headers['set-cookie'][0]).toMatch(/jwt=;/) //double check if jwt contain a value
+        expect(res.status).toBe(204)
+      })
+  })
+})
+
+describe('forget password', () => {
+  it('email sent', () => {
+    db.saveResetPasswordToken.mockImplementation(() => {})
+    sendEmailForgetPassword.mockImplementation(() => {})
+    return request(server)
+      .post('/api/v1/user/forgetPassword')
+      .then((res) => {
+        expect(res.status).toBe(200)
+        expect(res.text).toBe('Email sent')
+      })
+  })
+})
+
+describe('resetPassword', () => {
+  it('no token in database', () => {
+    db.findResetTokenByEmail.mockReturnValue(null)
+    return request(server)
+      .post('/api/v1/user/resetPassword')
+      .send({ email: 'exsiting', password: '123456', token: '123456789' })
+      .then((res) => {
+        expect(res.status).toBe(404)
+      })
+  })
+
+  it('token expires', () => {
+    db.findResetTokenByEmail.mockReturnValue({
+      resetDate: Date.now() - 3600 * 1000 * 24,
+    })
+    return request(server)
+      .post('/api/v1/user/resetPassword')
+      .send({ email: 'exsiting', password: '123456', token: '123456789' })
+      .then((res) => {
+        expect(res.status).toBe(498)
+      })
+  })
+
+  it('token does not match', () => {
+    db.findResetTokenByEmail.mockReturnValue({
+      resetDate: Date.now() - 3600 * 1000 * 0.1,
+    })
+    bcrypt.compare.mockReturnValue(false)
+    return request(server)
+      .post('/api/v1/user/resetPassword')
+      .send({ email: 'exsiting', password: '123456', token: '123456789' })
+      .then((res) => {
+        expect(res.status).toBe(498)
+      })
+  })
+
+  it('reset password successfully', () => {
+    db.findResetTokenByEmail.mockReturnValue({
+      resetDate: Date.now() - 3600 * 1000 * 0.1,
+    })
+    bcrypt.compare.mockReturnValue(true)
+    db.resetPassword.mockImplementation(() => {})
+    return request(server)
+      .post('/api/v1/user/resetPassword')
+      .send({ email: 'exsiting', password: '123456', token: '123456789' })
+      .then((res) => {
+        expect(res.text).toBe('password reset')
+      })
+  })
+
+  it('reset password failure', () => {
+    db.findResetTokenByEmail.mockReturnValue({
+      resetDate: Date.now() - 3600 * 1000 * 0.1,
+    })
+    bcrypt.compare.mockReturnValue(true)
+    db.resetPassword.mockImplementation(() =>
+      Promise.reject(new Error('Error reset password'))
+    )
+    console.error.mockImplementation(() => {})
+    return request(server)
+      .post('/api/v1/user/resetPassword')
+      .send({ email: 'exsiting', password: '123456', token: '123456789' })
+      .then((res) => {
+        expect(res.status).toBe(500)
+        expect(console.error).toHaveBeenCalledWith('Error reset password')
       })
   })
 })

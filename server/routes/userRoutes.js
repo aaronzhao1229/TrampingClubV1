@@ -188,7 +188,7 @@ router.post('/resetPassword', async (req, res) => {
 
     res.send('password reset')
   } catch (error) {
-    console.log(error)
+    console.error(error.message)
     res.status(500).json({ message: 'Something went wrong' })
   }
 })
