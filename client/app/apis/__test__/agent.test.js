@@ -1,16 +1,14 @@
-// import nock from 'nock'
-// import agent from '../agent'
-// import axios from '../axios'
-// jest.mock('../axios')
+import agent from '../agent'
+import nock from 'nock'
 
-// describe('getProgrammes', () => {
-//   it('returns programmes', () => {
-//     const scope = nock('http://localhost')
-//       .get(`/api/v1/programme`)
-//       .reply(200, { id: 1, firstName: 'Will' })
-//     return agent.programmes.getProgrammes().then((result) => {
-//       expect(result.firstName).toBe('Will')
-//       expect(scope.isDone()).toBe(true)
-//     })
-//   })
-// })
+describe('getProgramme', () => {
+  it('returns data from local api', () => {
+    const scope = nock('http://localhost')
+      .get('/api/v1/programme')
+      .reply(200, { id: 1, name: 'canterbury' })
+    return agent.programmes.getProgrammes().then((result) => {
+      expect(result.name).toContain('canterbury')
+      expect(scope.isDone()).toBe(true)
+    })
+  })
+})

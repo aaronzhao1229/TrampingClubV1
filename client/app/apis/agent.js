@@ -1,24 +1,20 @@
-import axios from './axios'
-
-// axios.defaults.withCredentials = true
-// // axios.defaults.baseURL = process.env.REACT_APP_API_URL
-// axios.defaults.baseURL = '/api/v1'
+import axiosFile from './axios'
 
 const responseBody = (response) => response.data
 
 const requests = {
-  get: (url, params) => axios.get(url, { params }).then(responseBody),
-  post: (url, body) => axios.post(url, body).then(responseBody),
-  put: (url, body) => axios.put(url, body).then(responseBody),
-  delete: (url) => axios.delete(url).then(responseBody),
+  get: (url, params) => axiosFile.get(url, { params }).then(responseBody),
+  post: (url, body) => axiosFile.post(url, body).then(responseBody),
+  put: (url, body) => axiosFile.put(url, body).then(responseBody),
+  delete: (url) => axiosFile.delete(url).then(responseBody),
   postForm: (url, data) =>
-    axios
+    axiosFile
       .post(url, data, {
         headers: { 'Content-type': 'multipart/form-data' },
       })
       .then(responseBody),
   putForm: (url, data) =>
-    axios
+    axiosFile
       .put(url, data, {
         headers: { 'Content-type': 'multipart/form-data' },
       })
