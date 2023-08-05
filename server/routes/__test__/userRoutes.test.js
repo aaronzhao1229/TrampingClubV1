@@ -3,7 +3,6 @@ const server = require('../../server')
 const db = require('../../db/userDb')
 const bcrypt = require('bcrypt')
 const { sendEmailForgetPassword } = require('../../ses')
-// const jwt = require('jsonwebtoken')
 
 jest.mock('../../db/userDb')
 jest.spyOn(console, 'error')
