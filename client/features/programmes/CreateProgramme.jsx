@@ -1,7 +1,6 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Container, Spinner, Form, Button } from 'react-bootstrap'
-
 import { useDispatch } from 'react-redux'
 import { setProgrammes } from './programmeSlice'
 import { useNavigate } from 'react-router-dom'
@@ -88,6 +87,7 @@ export default function CreateProgramme() {
         <Form.Group controlId="formFileMultiple" className="mb-3">
           <Form.Label>Upload Programme</Form.Label>
           <Form.Control
+            data-testid="uploadFile"
             type="file"
             accept="application/pdf,application/vnd.ms-excel"
             {...register('file', {

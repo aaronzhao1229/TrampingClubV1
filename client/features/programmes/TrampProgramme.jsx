@@ -22,6 +22,7 @@ export default function TrampProgramme() {
         width="100%"
         style={{ height: 'calc(100vh - 43px)' }}
         aria-label="This object displays an PDF file"
+        data-testid="tramp-pdf"
       />
     </>
   )
