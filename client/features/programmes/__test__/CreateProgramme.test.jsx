@@ -13,6 +13,7 @@ jest.mock('react-redux')
 jest.mock('react-router-dom')
 jest.mock('../../../app/apis/agentPrivate')
 jest.spyOn(toast, 'success')
+jest.spyOn(toast, 'error')
 
 const navigate = jest.fn()
 const fakeDispatch = jest.fn()
@@ -23,9 +24,6 @@ beforeEach(() => {
 
 useNavigate.mockImplementation(() => navigate)
 useDispatch.mockReturnValue(fakeDispatch)
-agentPrivate.programmes.uploadProgramme.mockImplementation(() =>
-  Promise.resolve()
-)
 
 const file = new File(['random'], 'values.pdf', {
   type: 'application/pdf',
@@ -47,8 +45,11 @@ describe('<CreateProgramme />', () => {
     expect(screen.getByRole('button').disabled).toBeFalsy()
   })
 
-  it('Click the submit button', async () => {
+  it('Click the submit button and create programme successfully', async () => {
     render(<CreateProgramme />)
+    agentPrivate.programmes.uploadProgramme.mockImplementation(() =>
+      Promise.resolve()
+    )
     toast.success.mockImplementation(() => {})
     await userEvent.type(screen.getByLabelText(/title/i), 'Peak Hill')
     await userEvent.selectOptions(screen.getByLabelText(/category/i), 'Tramp')
@@ -58,5 +59,22 @@ describe('<CreateProgramme />', () => {
     expect(fakeDispatch).toHaveBeenCalled()
     expect(navigate).toHaveBeenCalled()
     expect(toast.success).toHaveBeenCalled()
+  })
+
+  it('Click the submit button and failure', async () => {
+    render(<CreateProgramme />)
+    agentPrivate.programmes.uploadProgramme.mockImplementation(() =>
+      Promise.reject()
+    )
+    toast.error.mockImplementation(() => {})
+    await userEvent.type(screen.getByLabelText(/title/i), 'Peak Hill')
+    await userEvent.selectOptions(screen.getByLabelText(/category/i), 'Tramp')
+    await userEvent.upload(screen.getByTestId('uploadFile'), file)
+    await userEvent.click(screen.getByRole('button'))
+
+    expect(toast.error).toHaveBeenCalled()
+    expect(toast.error).toHaveBeenCalledWith(
+      'Something wrong with the server. Please try later.'
+    )
   })
 })
