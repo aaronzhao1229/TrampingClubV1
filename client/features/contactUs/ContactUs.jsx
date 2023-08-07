@@ -42,11 +42,6 @@ export default function ContactUs() {
   }
 
   const onSubmit = (values) => {
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     resolve()
-    //   }, 2000)
-    // })
     return agent.contact
       .contactUs(values)
       .then(() => {
@@ -57,16 +52,6 @@ export default function ContactUs() {
       })
       .catch((error) => handleApiErrors(error))
   }
-
-  // useEffect(() => {
-  //   const subscription = watch((value, { name, type }) => {
-  //     console.log('>>', value, name, type)
-  //     // {1: '1', 2: '9'} '2' 'change'
-  //     console.log(errors)
-  //   })
-
-  //   return () => subscription.unsubscribe()
-  // }, [watch])
 
   return (
     <Container className="my-4">

@@ -29,10 +29,23 @@ const file = new File(['random'], 'values.pdf', {
   type: 'application/pdf',
 })
 
+const invalidFile = new File(['random'], 'values.pdf', {
+  type: 'pdf',
+})
+
 describe('<CreateProgramme />', () => {
   it('render form title', () => {
     render(<CreateProgramme />)
     expect(screen.getByText(/title/i)).toBeInTheDocument()
+  })
+
+  it('file is required error shown under the input', async () => {
+    render(<CreateProgramme />)
+    await userEvent.type(screen.getByLabelText(/title/i), 'Peak Hill')
+    await userEvent.selectOptions(screen.getByLabelText(/category/i), 'Tramp')
+    await userEvent.upload(screen.getByTestId('uploadFile'), invalidFile)
+    expect(screen.getByText(/required/i)).toBeInTheDocument()
+    expect(screen.getByRole('button').disabled).toBeTruthy()
   })
 
   it('Button is clickable', async () => {
