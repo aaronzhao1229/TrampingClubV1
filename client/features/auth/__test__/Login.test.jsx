@@ -1,27 +1,43 @@
 import React from 'react'
 import Login from '../Login'
+import ForgetPassword from '../ForgetPassword'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
 import { toast } from 'react-toastify'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
+
+// import * as router from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
 import agent from '../../../app/apis/agent'
 import ErrorTest from '../../../app/model/errorTest'
 
-jest.mock('react-router-dom')
+const mockNavigate = jest.fn()
+const mockLocation = jest.fn()
+
 jest.mock('react-redux')
 jest.mock('../../../app/apis/agent')
-
 jest.spyOn(toast, 'error')
-const navigate = jest.fn()
-const fakeDispatch = jest.fn()
-const fakeLocation = jest.fn()
 
-useNavigate.mockImplementation(() => navigate)
+jest.mock('react-router-dom', () => {
+  const original = jest.requireActual('react-router-dom')
+  return {
+    ...original,
+    useNavigate: () => mockNavigate,
+    useLocation: () => mockLocation,
+  }
+})
+
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
+const fakeDispatch = jest.fn()
 useDispatch.mockReturnValue(fakeDispatch)
-useLocation.mockReturnValue(fakeLocation)
+// useNavigate.mockImplementation(() => navigate)
+
+// useLocation.mockReturnValue(fakeLocation)
 
 describe('<Login />', () => {
   it('render the form', () => {
@@ -53,7 +69,7 @@ describe('<Login />', () => {
     await userEvent.type(screen.getByLabelText(/password/i), 'test')
 
     await userEvent.click(screen.getByRole('button'))
-    expect(navigate).toHaveBeenCalled()
+    expect(mockNavigate).toHaveBeenCalled()
     expect(fakeDispatch).toHaveBeenCalled()
   })
 
@@ -69,4 +85,19 @@ describe('<Login />', () => {
     await userEvent.click(screen.getByRole('button'))
     expect(toast.error).toHaveBeenCalledWith('Unauthorized')
   })
+
+  // it('Click the forget password link', async () => {
+  //   render(
+  //     <MemoryRouter initialEntries={['/']}>
+  //       <Routes>
+  //         <Route path="/" element={<Login />} />
+  //         <Route path="/forgetPassword" element={<ForgetPassword />} />
+  //       </Routes>
+  //     </MemoryRouter>
+  //   )
+
+  //   const link = screen.getByText(/forget/i)
+  //   await userEvent.click(link)
+  //   expect(screen.getByText(/Enter the email address/i)).toBeInTheDocument()
+  // })
 })
