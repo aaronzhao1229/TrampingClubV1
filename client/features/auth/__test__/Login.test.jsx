@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
 import { toast } from 'react-toastify'
-import { MemoryRouter, Route, Routes } from 'react-router-dom'
+import { MemoryRouter, BrowserRouter, Route, Routes } from 'react-router-dom'
 
 // import * as router from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -41,12 +41,20 @@ useDispatch.mockReturnValue(fakeDispatch)
 
 describe('<Login />', () => {
   it('render the form', () => {
-    render(<Login />)
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
+    )
     expect(screen.getAllByRole('textbox')).toHaveLength(2)
   })
 
   it('Button is clickable', async () => {
-    render(<Login />)
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
+    )
     await userEvent.type(screen.getByLabelText(/username/i), 'test')
     await userEvent.type(screen.getByLabelText(/password/i), 'test')
 
@@ -54,7 +62,11 @@ describe('<Login />', () => {
   })
 
   it('password is required error shown and button is not clickable', async () => {
-    render(<Login />)
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
+    )
     await userEvent.type(screen.getByLabelText(/username/i), 'test')
     await userEvent.type(screen.getByLabelText(/password/i), 'test')
     await userEvent.clear(screen.getByLabelText(/password/i))
@@ -63,7 +75,11 @@ describe('<Login />', () => {
   })
 
   it('click the button and login', async () => {
-    render(<Login />)
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
+    )
     agent.auth.login.mockImplementation(() => Promise.resolve())
     await userEvent.type(screen.getByLabelText(/username/i), 'test')
     await userEvent.type(screen.getByLabelText(/password/i), 'test')
@@ -74,7 +90,11 @@ describe('<Login />', () => {
   })
 
   it('Click the submit button and failure', async () => {
-    render(<Login />)
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
+    )
     agent.auth.login.mockImplementation(() =>
       Promise.reject(new ErrorTest({ status: 401 }))
     )
@@ -86,18 +106,18 @@ describe('<Login />', () => {
     expect(toast.error).toHaveBeenCalledWith('Unauthorized')
   })
 
-  // it('Click the forget password link', async () => {
-  //   render(
-  //     <MemoryRouter initialEntries={['/']}>
-  //       <Routes>
-  //         <Route path="/" element={<Login />} />
-  //         <Route path="/forgetPassword" element={<ForgetPassword />} />
-  //       </Routes>
-  //     </MemoryRouter>
-  //   )
+  it('Click the forget password link', async () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/forgetPassword" element={<ForgetPassword />} />
+        </Routes>
+      </MemoryRouter>
+    )
 
-  //   const link = screen.getByText(/forget/i)
-  //   await userEvent.click(link)
-  //   expect(screen.getByText(/Enter the email address/i)).toBeInTheDocument()
-  // })
+    const link = screen.getByText(/forget/i)
+    await userEvent.click(link)
+    expect(screen.getByText(/Enter the email address/i)).toBeInTheDocument()
+  })
 })
