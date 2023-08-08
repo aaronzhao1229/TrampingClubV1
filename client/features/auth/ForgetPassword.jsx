@@ -21,7 +21,6 @@ export default function ForgetPassword() {
 
   async function onSubmit(values) {
     try {
-      console.log(values)
       await agent.auth.forgetPassword(values)
       toast.success('We have sent you an email to reset your password')
       navigate('/')

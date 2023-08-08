@@ -8,6 +8,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
 import agent from '../../../app/apis/agent'
+import ErrorTest from '../../../app/model/errorTest'
 
 jest.mock('react-router-dom')
 jest.mock('react-redux')
@@ -59,12 +60,13 @@ describe('<Login />', () => {
   it('Click the submit button and failure', async () => {
     render(<Login />)
     agent.auth.login.mockImplementation(() =>
-      Promise.reject(new Error({ response: 'fail' }))
+      Promise.reject(new ErrorTest({ status: 401 }))
     )
+
     await userEvent.type(screen.getByLabelText(/username/i), 'test')
     await userEvent.type(screen.getByLabelText(/password/i), 'test')
 
     await userEvent.click(screen.getByRole('button'))
-    expect(toast.error).toHaveBeenCalledWith('No server response')
+    expect(toast.error).toHaveBeenCalledWith('Unauthorized')
   })
 })

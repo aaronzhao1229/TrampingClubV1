@@ -33,7 +33,13 @@ export default function Login() {
       dispatch(setCredentials({ ...userData, username }))
       navigate(location.state?.from || '/')
     } catch (error) {
-      toast.error('No server response')
+      if (!error.response) {
+        toast.error('No server response')
+      } else if (error.response.status === 401) {
+        toast.error('Unauthorized')
+      } else {
+        toast.error('Login Failed')
+      }
     }
   }
 
