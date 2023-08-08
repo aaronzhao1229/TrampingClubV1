@@ -159,13 +159,24 @@ router.get('/logout', async (req, res) => {
 })
 
 router.post('/forgetPassword', async (req, res) => {
+  // find email address
+
+  const foundUser = await db.getUserByEmail(req.body.email)
+  if (!foundUser) return res.sendStatus(404)
+
   let resetToken = crypto.randomBytes(32).toString('hex')
 
   const hash = await bcrypt.hash(resetToken, 10)
   // save the token and dateNow to DB
-  await db.saveResetPasswordToken(req.body.email, hash)
-  await sendEmailForgetPassword(req.body.email, resetToken)
-  res.send('Email sent')
+
+  try {
+    await db.saveResetPasswordToken(req.body.email, hash)
+    await sendEmailForgetPassword(req.body.email, resetToken)
+    res.send('Email sent')
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).json({ message: 'internal server error' })
+  }
 })
 
 router.post('/resetPassword', async (req, res) => {

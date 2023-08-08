@@ -55,7 +55,7 @@ const sendEmail = async (info) => {
   try {
     return await ses.send(sendEmailCommand)
   } catch (error) {
-    console.log(error)
+    console.error(error.message)
   }
 }
 
