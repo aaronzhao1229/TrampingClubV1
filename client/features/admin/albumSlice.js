@@ -22,7 +22,7 @@ export const fetchAlbumAsync = createAsyncThunk(
 )
 
 export const removeAlbumAsync = createAsyncThunk(
-  'ablum/removeAlbumAsync',
+  'album/removeAlbumAsync',
   async (albumId, thunkAPI) => {
     try {
       const response = await agentPrivate.album.deleteAlbumByAlbumId(albumId)
@@ -34,7 +34,7 @@ export const removeAlbumAsync = createAsyncThunk(
 )
 
 export const editAlbumAsync = createAsyncThunk(
-  'ablum/editAlbumAsync',
+  'album/editAlbumAsync',
   async (editedAlbum, thunkAPI) => {
     try {
       // const response = await editAlbum(editedAlbum)
@@ -65,7 +65,7 @@ export const albumSlice = createSlice({
     })
     builder.addCase(fetchAlbumAsync.rejected, (state, action) => {
       state.status = 'idle'
-      console.log(action.payload)
+      console.error(action.payload)
     })
     builder.addCase(removeAlbumAsync.pending, (state, action) => {
       state.status = 'pendingRemoveAlbum' + action.meta.arg
@@ -78,20 +78,17 @@ export const albumSlice = createSlice({
     })
     builder.addCase(removeAlbumAsync.rejected, (state, action) => {
       state.status = 'idle'
-      console.log(action.payload)
+      console.error(action.payload)
     })
     builder.addCase(editAlbumAsync.pending, (state, action) => {
       state.status = 'pendingEditAlbum' + action.meta.arg.albumId
     })
     builder.addCase(editAlbumAsync.fulfilled, (state, action) => {
-      state.album = [...state.album].filter(
-        (album) => album.albumId !== action.meta.arg.albumId
-      )
       state.status = 'idle'
     })
     builder.addCase(editAlbumAsync.rejected, (state, action) => {
       state.status = 'idle'
-      console.log(action.payload)
+      console.error(action.payload)
     })
   },
 })
