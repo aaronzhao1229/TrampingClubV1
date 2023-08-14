@@ -51,7 +51,7 @@ export const programmesSlice = createSlice({
     })
     builder.addCase(fetchProgrammesAsync.rejected, (state, action) => {
       state.status = 'idle'
-      console.log(action.payload)
+      console.error(action.payload)
     })
   },
 })
