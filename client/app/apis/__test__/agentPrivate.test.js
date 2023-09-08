@@ -4,8 +4,11 @@ import store from '../../../store'
 import agent from '../agent'
 
 jest.mock('../agent')
+jest.spyOn(Promise, 'reject')
 
-agent.auth.refreshAuth.mockImplementation(() => Promise.resolve('adfsadfsdfs'))
+agent.auth.refreshAuth.mockImplementation(() =>
+  Promise.resolve({ accessToken: 'adfsadfsdfs' })
+)
 
 describe('album', () => {
   it('edit album', () => {
@@ -57,5 +60,21 @@ describe('programmes', () => {
       expect(result.programmeName).toBe('walk')
       expect(scope.isDone()).toBe(true)
     })
+  })
+})
+
+describe('interceptor error', () => {
+  it('response error 403', async () => {
+    const scope = nock('http://localhost')
+      .post('/api/v1/programme/updateProgramme')
+      .reply(403)
+      .post('/api/v1/programme/updateProgramme')
+      .reply(200, { id: 2, programmeName: 'walk' })
+
+    await agentPrivate.programmes.uploadProgramme({ id: 1 })
+    const token = store.getState().auth.accessToken
+
+    expect(token).toBe('adfsadfsdfs')
+    expect(scope.isDone()).toBe(true)
   })
 })
