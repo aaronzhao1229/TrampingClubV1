@@ -72,13 +72,9 @@ const programmes = {
     requests.postForm('/programme/updateProgramme', newProgramme),
 }
 
-const auth = {
-  // refreshAuth: () => requests.get('/user/refresh'),
-}
-
 const agentPrivate = {
   album,
-  auth,
+
   programmes,
 }
 
