@@ -5,6 +5,7 @@ import { setCredentials } from '../../features/auth/authSlice'
 import agent from './agent'
 
 const responseBody = (response) => response.data
+
 axiosPrivate.interceptors.request.use(
   (config) => {
     const token = store.getState().auth.accessToken
