@@ -12,3 +12,15 @@ describe('getProgramme', () => {
     })
   })
 })
+
+describe('auth', () => {
+  it('login', () => {
+    const scope = nock('http://localhost')
+      .post('/api/v1/user/login')
+      .reply(200, { id: 1, username: 'user1' })
+    return agent.auth.login({ username: 'user2' }).then((result) => {
+      expect(result.username).toBe('user1')
+      expect(scope.isDone()).toBe(true)
+    })
+  })
+})
