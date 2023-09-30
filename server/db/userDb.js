@@ -14,7 +14,7 @@ function createUser(newUser, db = connection) {
       password: newUser.password,
       email: newUser.email,
     })
-    .then((newId) => createRolesByUserId(newUser.roles, newId[0]))
+    .then((newId) => createRolesByUserId(newUser.roles, newId[0], db))
 }
 
 function saveToken(username, refreshToken, db = connection) {
@@ -34,6 +34,11 @@ function createRolesByUserId(roles, userId, db = connection) {
     dataToInsert.push({ role: role, userId: userId })
   })
   return db('userRoles').insert(dataToInsert)
+}
+
+function getUserByEmail(email, db = connection) {
+  
+  return db('user').select().where('email', email).first()
 }
 
 function saveResetPasswordToken(email, resetPasswordToken, db = connection) {
@@ -65,8 +70,8 @@ module.exports = {
   createUser,
   saveToken,
   deleteToken,
+  getUserByEmail,
   saveResetPasswordToken,
   findResetTokenByEmail,
   resetPassword,
-  
 }

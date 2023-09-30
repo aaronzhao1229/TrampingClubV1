@@ -22,7 +22,7 @@ export const fetchPhotosAsync = createAsyncThunk(
 )
 
 export const removePhotoAsync = createAsyncThunk(
-  'ablum/removePhotoAsync',
+  'album/removePhotoAsync',
   async (photoId, thunkAPI) => {
     try {
       // const response = await deletePhotoByPhotoId(photoId)
@@ -49,7 +49,7 @@ export const photosSlice = createSlice({
     })
     builder.addCase(fetchPhotosAsync.rejected, (state, action) => {
       state.status = 'idle'
-      console.log(action.payload)
+      console.error(action.payload)
     })
     builder.addCase(removePhotoAsync.pending, (state, action) => {
       state.status = 'pendingRemovePhoto' + action.meta.arg
@@ -62,7 +62,7 @@ export const photosSlice = createSlice({
     })
     builder.addCase(removePhotoAsync.rejected, (state, action) => {
       state.status = 'idle'
-      console.log(action.payload)
+      console.error(action.payload)
     })
   },
 })

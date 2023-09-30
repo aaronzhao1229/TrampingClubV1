@@ -19,7 +19,7 @@ export default function ContactUs() {
   const {
     register,
     handleSubmit,
-    setError,
+    // setError,
     formState: { errors, isValid, isSubmitting },
   } = useForm({
     mode: 'onTouched',
@@ -27,26 +27,25 @@ export default function ContactUs() {
     defaultValues: initState,
   })
 
-  function handleApiErrors(errors) {
-    if (errors) {
-      errors.forEach((error) => {
-        if (error.includes('Name')) {
-          setError('name', { message: error })
-        } else if (error.includes('Email')) {
-          setError('email', { message: error })
-        } else if (error.includes('Message')) {
-          setError('message', { message: error })
-        }
-      })
-    }
+  function handleError(error) {
+    console.log(error)
+    toast.error('Something wrong with the server. Please try later.')
   }
+  // function handleApiErrors(errors) {
+  //   if (errors) {
+  //     errors.forEach((error) => {
+  //       if (error.includes('Name')) {
+  //         setError('name', { message: error })
+  //       } else if (error.includes('Email')) {
+  //         setError('email', { message: error })
+  //       } else if (error.includes('Message')) {
+  //         setError('message', { message: error })
+  //       }
+  //     })
+  //   }
+  // }
 
   const onSubmit = (values) => {
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     resolve()
-    //   }, 2000)
-    // })
     return agent.contact
       .contactUs(values)
       .then(() => {
@@ -55,18 +54,8 @@ export default function ContactUs() {
         )
         navigate('/')
       })
-      .catch((error) => handleApiErrors(error))
+      .catch((error) => handleError(error))
   }
-
-  // useEffect(() => {
-  //   const subscription = watch((value, { name, type }) => {
-  //     console.log('>>', value, name, type)
-  //     // {1: '1', 2: '9'} '2' 'change'
-  //     console.log(errors)
-  //   })
-
-  //   return () => subscription.unsubscribe()
-  // }, [watch])
 
   return (
     <Container className="my-4">

@@ -1,10 +1,12 @@
 import { axiosPrivate } from './axios'
 import store from '../../store'
+
 // import { refreshAuth } from './userApi'
 import { setCredentials } from '../../features/auth/authSlice'
 import agent from './agent'
 
 const responseBody = (response) => response.data
+
 axiosPrivate.interceptors.request.use(
   (config) => {
     const token = store.getState().auth.accessToken
@@ -31,9 +33,12 @@ axiosPrivate.interceptors.response.use(
       prevRequest.headers[
         'Authorization'
       ] = `Bearer ${newAccessToken.accessToken}`
+
       return axiosPrivate(prevRequest)
     }
+
     return Promise.reject(error)
+    // we are not able to catch and handle the responses in Axios interceptors. That's not what they say it's been designed for. Therefore, we still need to catch the errors inside our components as well. We still need to catch the error at the end of the errors journey
   }
 )
 
@@ -72,13 +77,9 @@ const programmes = {
     requests.postForm('/programme/updateProgramme', newProgramme),
 }
 
-const auth = {
-  // refreshAuth: () => requests.get('/user/refresh'),
-}
-
 const agentPrivate = {
   album,
-  auth,
+
   programmes,
 }
 

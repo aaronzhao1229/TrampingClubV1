@@ -11,9 +11,7 @@ const router = express.Router()
 router.post('/createUser', async (req, res) => {
   const { username, password, email } = req.body
   if (!username || !password || !email)
-    return res
-      .status(400)
-      .json({ message: 'Username, password and email are required.' })
+    return res.status(400).send('Username, password and email are required.')
 
   const existingUsers = await db.getUsers()
   const duplicateUsername = existingUsers.find(
@@ -44,10 +42,10 @@ router.post('/createUser', async (req, res) => {
     }
     await db.createUser(newUser)
 
-    res.status(201).json({ success: `New user ${username} created!` })
+    res.status(201).send(`New user ${username} created!`)
   } catch (error) {
-    console.log(error)
-    res.status(500).json({ message: 'Something went wrong' })
+    console.error(error.message)
+    res.status(500).send('Something went wrong')
   }
 })
 
@@ -65,6 +63,7 @@ router.post('/login', async (req, res) => {
 
   // evaluate password
   const match = await bcrypt.compare(password, foundUser.password)
+
   if (match) {
     // create JWT
     const userRolesObject = await db.getUserRolesByUserId(foundUser.id)
@@ -105,7 +104,7 @@ router.get('/refresh', async (req, res) => {
   const cookies = req.cookies
 
   if (!cookies?.jwt) return res.sendStatus(401)
-  // console.log(cookies.jwt)
+
   const refreshToken = cookies.jwt
 
   const existingUsers = await db.getUsers()
@@ -121,6 +120,7 @@ router.get('/refresh', async (req, res) => {
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
     async (err, decoded) => {
+      console.log('hey')
       if (err || foundUser.username !== decoded.username)
         return res.sendStatus(403)
       const username = decoded.username
@@ -159,13 +159,26 @@ router.get('/logout', async (req, res) => {
 })
 
 router.post('/forgetPassword', async (req, res) => {
+  // find email address
+
+  const foundUser = await db.getUserByEmail(req.body.email)
+
+  if (!foundUser) return res.sendStatus(404)
+
   let resetToken = crypto.randomBytes(32).toString('hex')
 
   const hash = await bcrypt.hash(resetToken, 10)
   // save the token and dateNow to DB
-  await db.saveResetPasswordToken(req.body.email, hash)
-  await sendEmailForgetPassword(req.body.email, resetToken)
-  res.send('Email sent')
+
+  try {
+    await db.saveResetPasswordToken(req.body.email, hash)
+    await sendEmailForgetPassword(req.body.email, resetToken)
+
+    res.send('Email sent')
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).json({ message: 'internal server error' })
+  }
 })
 
 router.post('/resetPassword', async (req, res) => {
@@ -188,7 +201,7 @@ router.post('/resetPassword', async (req, res) => {
 
     res.send('password reset')
   } catch (error) {
-    console.log(error)
+    console.error(error.message)
     res.status(500).json({ message: 'Something went wrong' })
   }
 })

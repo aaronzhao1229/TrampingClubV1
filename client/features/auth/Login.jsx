@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button'
 import { useForm } from 'react-hook-form'
 
 import { toast } from 'react-toastify'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from './authSlice'
 import agent from '../../app/apis/agent'
@@ -35,8 +35,6 @@ export default function Login() {
     } catch (error) {
       if (!error.response) {
         toast.error('No server response')
-      } else if (error.response.status === 400) {
-        toast.error('Missing Username or Password')
       } else if (error.response.status === 401) {
         toast.error('Unauthorized')
       } else {
@@ -104,10 +102,15 @@ export default function Login() {
                   )}
                 </Button>
               </Form>
-              <Card.Link href="/forgetPassword">Forget password?</Card.Link>
+              <Link to="/forgetPassword">Forget password?</Link>
+              <br></br>
+              <Link to="/register">
+                {"Don't have an account? Register here"}
+              </Link>
+              {/* <Card.Link href="/forgetPassword">Forget password?</Card.Link>
               <Card.Link href="/register">
                 {"Don't have an account? Register here"}
-              </Card.Link>
+              </Card.Link> */}
             </Card.Body>
           </Card>
         </Col>

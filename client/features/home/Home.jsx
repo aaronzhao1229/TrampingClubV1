@@ -57,6 +57,7 @@ export default function Home() {
             onClick={() =>
               window.open('https://www.facebook.com/groups/lambdatrampers')
             }
+            data-testid="facebook-icon"
           />
         </Col>
         <Col>
@@ -87,6 +88,7 @@ export default function Home() {
             size="2xl"
             className="iconHover"
             onClick={() => navigate('/contactus')}
+            data-testid="message-icon"
           />
         </Col>
       </Row>

@@ -21,19 +21,18 @@ export default function ForgetPassword() {
 
   async function onSubmit(values) {
     try {
-      console.log(values)
       await agent.auth.forgetPassword(values)
       toast.success('We have sent you an email to reset your password')
       navigate('/')
     } catch (error) {
       if (!error.response) {
         toast.error('No server response')
-      } else if (error.response.status === 400) {
+      } else if (error.response.status === 404) {
         toast.error('Invalid email address')
-      } else if (error.response.status === 401) {
-        toast.error('Unauthorized')
+      } else if (error.response.status === 500) {
+        toast.error('Internal server error')
       } else {
-        toast.error('Login Failed')
+        toast.error('server error')
       }
     }
   }

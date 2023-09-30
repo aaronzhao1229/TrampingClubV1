@@ -63,7 +63,7 @@ export default function EditAlbumForm({ targetAlbum }) {
     //     resolve()
     //   }, 2000)
     // })
-    console.log(editedAlbum)
+    
     return dispatch(editAlbumAsync(editedAlbum))
       .then(() => {
         toast.success('Album info has been saved.')
