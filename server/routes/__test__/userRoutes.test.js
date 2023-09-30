@@ -239,6 +239,7 @@ describe('/logout', () => {
 
 describe('forget password', () => {
   it('email sent', () => {
+    db.getUserByEmail.mockReturnValue({ id: 1, usename: 'test1234' })
     db.saveResetPasswordToken.mockImplementation(() => {})
     sendEmailForgetPassword.mockImplementation(() => {})
     return request(server)

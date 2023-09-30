@@ -115,13 +115,14 @@
     "singleQuote": true
   },
   "jest": {
+    
     "testEnvironment": "jsdom",
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
     },
-    "transformIgnorePatterns": [
-      "<rootDir>/node_modules/(?!(@aws-sdk/client-s3))"
-    ]
+    "moduleNameMapper": {
+      "^uuid$": "<rootDir>/node_modules/uuid"
+    }
   },
   "browserslist": "> 2%, not dead"
 }
