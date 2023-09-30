@@ -30,6 +30,16 @@ npm run dev # to start the dev server
 npm test -- --coverage 
 ```
 
+#### **Other commands**
+
+```
+npm run knex migrate:make todos
+npm run knex migrate:latest
+npm run knex seed:make test-tasks
+npm run knex seed:run
+npm run knex migrate:rollback
+```
+
 You can find the server running on [http://localhost:3000](http://localhost:3000).
 
 ---
