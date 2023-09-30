@@ -12,13 +12,26 @@ export default function Videos() {
   useEffect(() => {
     dispatch(fetchVideosAsync())
   }, [dispatch])
-  console.log(videos)
+
   return (
     <Container>
-      <Row xs={1} md={4} className="g-4">
-        {videos.videos.map((videos, i) => (
+      <Row xs={1} md={2} className="g-4">
+        {[...videos.videos].reverse().map((videos, i) => (
           <Col key={i}>
-            <p>{videos.videoUrl}</p>
+            <h6 className="mb-3">{videos.videoTitle}</h6>
+
+            {/* <video controls width="70%" src={videos.videoUrl}></video> */}
+            <div className="ratio ratio-16x9">
+              <iframe
+                width="560"
+                height="315"
+                src={videos.videoUrl}
+                title={videos.videoTitle}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+            </div>
           </Col>
         ))}
       </Row>
