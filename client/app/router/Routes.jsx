@@ -18,6 +18,7 @@ import PersistLogin from '../components/PersistLogin'
 import Admin from '../../features/admin/Admin'
 import Register from '../../features/auth/Register'
 import ResetPassword from '../../features/auth/ResetPassword'
+import Videos from '../../features/videos/Videos'
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,7 @@ export const router = createBrowserRouter([
       { path: 'walk', element: <WalkProgramme /> },
       { path: 'album', element: <Album /> },
       { path: 'album/:albumId', element: <SingleAlbum /> },
+      { path: 'videos', element: <Videos /> },
       { path: 'contactus', element: <ContactUs /> },
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },

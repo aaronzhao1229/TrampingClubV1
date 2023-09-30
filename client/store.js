@@ -5,6 +5,7 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import { albumSlice } from './features/admin/albumSlice'
 import { photosSlice } from './features/admin/photosSlice'
+import { videoSlice } from './features/videos/videoSlice'
 import { programmesSlice } from './features/programmes/programmeSlice'
 import { authSlice } from './features/auth/authSlice'
 
@@ -17,6 +18,7 @@ const store = configureStore({
     photos: photosSlice.reducer,
     programmes: programmesSlice.reducer,
     auth: authSlice.reducer,
+    videos: videoSlice.reducer,
   },
   // devTools: false,
 })
