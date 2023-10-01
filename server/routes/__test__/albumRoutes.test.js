@@ -53,4 +53,22 @@ describe('/uploadImage', () => {
         expect(res.status).toBe(200)
       })
   })
+
+  it('console error', () => {
+    uploadImageToS3.mockImplementation(() => {})
+    db.createPhotos.mockImplementation(() =>
+      Promise.reject(new Error('creating photos error'))
+    )
+    console.error.mockImplementation(() => {})
+    return request(server)
+      .post('/api/v1/album/uploadImage', verifyJWT, upload.array('image'))
+      .send({
+        albumName: 'test1',
+        tripDate: '01/10/2023',
+      })
+      .then((res) => {
+        expect(res.status).toBe(500)
+        expect(console.error).toHaveBeenCalledWith('creating photos error')
+      })
+  })
 })
