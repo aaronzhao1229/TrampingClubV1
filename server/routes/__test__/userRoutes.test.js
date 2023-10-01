@@ -265,6 +265,19 @@ describe('forget password', () => {
         expect(res.text).toBe('Email sent')
       })
   })
+  it('forget password error', () => {
+    db.getUserByEmail.mockReturnValue({ id: 1, usename: 'test1234' })
+    db.saveResetPasswordToken.mockImplementation(() =>
+      Promise.reject(new Error('Error'))
+    )
+    console.error.mockImplementation(() => {})
+    return request(server)
+      .post('/api/v1/user/forgetPassword')
+      .then((res) => {
+        expect(res.status).toBe(500)
+        expect(console.error).toHaveBeenCalledWith('Error')
+      })
+  })
 })
 
 describe('resetPassword', () => {
