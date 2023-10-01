@@ -19,6 +19,7 @@ import Admin from '../../features/admin/Admin'
 import Register from '../../features/auth/Register'
 import ResetPassword from '../../features/auth/ResetPassword'
 import Videos from '../../features/videos/Videos'
+import CreateVideo from '../../features/videos/CreateVideo'
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ export const router = createBrowserRouter([
               { path: 'createAlbum', element: <CreateAlbum /> },
               { path: 'updateProgramme', element: <CreateProgramme /> },
               { path: 'manageAlbum/:albumId', element: <ManageSingleAlbum /> },
+              { path: 'createVideo', element: <CreateVideo /> },
             ],
           },
         ],

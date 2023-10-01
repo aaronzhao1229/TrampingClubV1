@@ -28,20 +28,6 @@ export default function CreateAlbum() {
     defaultValues: initState,
   })
 
-  // function handleApiErrors(errors) {
-  //   if (errors) {
-  //     errors.forEach((error) => {
-  //       if (error.includes('Name')) {
-  //         setError('name', { message: error })
-  //       } else if (error.includes('Email')) {
-  //         setError('email', { message: error })
-  //       } else if (error.includes('Message')) {
-  //         setError('message', { message: error })
-  //       }
-  //     })
-  //   }
-  // }
-
   const onSubmit = (values) => {
     // console.log(isSubmitting)
     // setTimeout(() => console.log(values), 3000)
@@ -52,6 +38,7 @@ export default function CreateAlbum() {
     //     resolve()
     //   }, 2000)
     // })
+
     const formData = new FormData()
 
     formData.append('albumName', values.tripName)

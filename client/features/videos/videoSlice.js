@@ -23,7 +23,11 @@ export const fetchVideosAsync = createAsyncThunk(
 export const videoSlice = createSlice({
   name: 'videos',
   initialState,
-  reducers: {},
+  reducers: {
+    setVideos: (state) => {
+      state.videosLoaded = false
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchVideosAsync.pending, (state) => {
       state.status = 'pendingFetchVideos'
@@ -39,3 +43,5 @@ export const videoSlice = createSlice({
     })
   },
 })
+
+export const { setVideos } = videoSlice.actions
