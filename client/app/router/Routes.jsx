@@ -22,6 +22,7 @@ import Videos from '../../features/videos/Videos'
 import CreateVideo from '../../features/videos/CreateVideo'
 import ManageVideos from '../../features/videos/ManageVideos'
 import EditVideo from '../../features/videos/EditVideo'
+import AddMorePhotos from '../../features/admin/AddMorePhotos'
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +38,7 @@ export const router = createBrowserRouter([
               { path: 'admin', element: <Admin /> },
               { path: 'manageAlbum', element: <ManageAlbum /> },
               { path: 'createAlbum', element: <CreateAlbum /> },
+              { path: 'addMorePhotos/:albumId', element: <AddMorePhotos /> },
               { path: 'updateProgramme', element: <CreateProgramme /> },
               { path: 'manageAlbum/:albumId', element: <ManageSingleAlbum /> },
               { path: 'createVideo', element: <CreateVideo /> },

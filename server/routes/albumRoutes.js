@@ -42,6 +42,29 @@ router.post(
   }
 )
 
+router.post(
+  '/addMorePhotos/:albumId',
+  verifyJWT,
+  upload.array('image'),
+  async (req, res) => {
+    const albumId = req.params.albumId
+    const imageNames = []
+    for (let i = 0; i < req.files.length; i++) {
+      let imageName = randomImageName()
+      await uploadImageToS3(imageName, req.files[i])
+      imageNames.push(imageName)
+    }
+    db.addMorePhotos(albumId, imageNames)
+      .then((result) => {
+        res.json(result)
+      })
+      .catch((err) => {
+        console.error(err.message)
+        res.status(500).json({ message: 'Something went wrong' })
+      })
+  }
+)
+
 router.get('/getPhotos/:albumId', async (req, res) => {
   const albumId = req.params.albumId
   const images = await db.getPhotosByAlbumId(albumId)
