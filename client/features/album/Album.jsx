@@ -14,9 +14,10 @@ export default function Album() {
     if (!album.albumLoaded) dispatch(fetchAlbumAsync())
   }, [album.albumLoaded, dispatch])
 
-  if (album.album.length === 0) return <h6>No Album created.</h6>
+  if (!album.albumLoaded)
+    return <LoadingComponent message="Loading albums..." />
 
-  if (!album.albumLoaded) return <LoadingComponent />
+  if (album.album.length === 0) return <h6>No Album created.</h6>
 
   return (
     <Container fluid style={{ marginTop: 50 }}>

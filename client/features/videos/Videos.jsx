@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { fetchVideosAsync } from './videoSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap'
+import LoadingComponent from '../../app/components/LoadingComponent'
 
 export default function Videos() {
   const dispatch = useDispatch()
@@ -12,6 +13,9 @@ export default function Videos() {
   useEffect(() => {
     if (!videos.videosLoaded) dispatch(fetchVideosAsync())
   }, [dispatch, videos.videosLoaded])
+
+  if (!videos.videosLoaded)
+    return <LoadingComponent message="Loading videos..." />
 
   return (
     <Container style={{ marginTop: 50 }}>

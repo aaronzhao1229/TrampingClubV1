@@ -4,6 +4,7 @@ import { fetchAlbumAsync, removeAlbumAsync } from './albumSlice'
 import { Card, Row, Col, Container, Button, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { convertDateToString } from '../../app/utils/utils'
+import LoadingComponent from '../../app/components/LoadingComponent'
 
 export default function ManageAlbum() {
   const album = useSelector((state) => state.album)
@@ -12,6 +13,9 @@ export default function ManageAlbum() {
   useEffect(() => {
     if (!album.albumLoaded) dispatch(fetchAlbumAsync())
   }, [album.albumLoaded, dispatch])
+
+  if (!album.albumLoaded)
+    return <LoadingComponent message="Loading albums..." />
   if (album.album.length === 0) return <h6>No Album created.</h6>
   return (
     <Container fluid style={{ marginTop: 50 }}>

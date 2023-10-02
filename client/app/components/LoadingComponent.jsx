@@ -1,27 +1,13 @@
 import React from 'react'
-import { Spinner, Modal } from 'react-bootstrap'
+import { Spinner } from 'react-bootstrap'
 
-export default function LoadingComponent({ message = 'Loadin...' }) {
+export default function LoadingComponent({ message = 'Loading...' }) {
   return (
-    <div
-      className="modal show"
-      style={{ display: 'block', position: 'initial' }}
-    >
-      <Modal.Dialog>
-        <Modal.Header>
-          <Modal.Title>{message}</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <Spinner
-            as="span"
-            animation="border"
-            size="lg"
-            role="status"
-            aria-hidden="true"
-          />
-        </Modal.Body>
-      </Modal.Dialog>
+    <div className="text-center" style={{ marginTop: 200, marginBottom: 200 }}>
+      <Spinner animation="border" role="status">
+        <span className="sr-only">{message}</span>
+      </Spinner>
+      <h4>{message}</h4>
     </div>
   )
 }

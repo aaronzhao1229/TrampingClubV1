@@ -4,6 +4,7 @@ import { fetchVideosAsync, deleteVideoAsync } from './videoSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import LoadingComponent from '../../app/components/LoadingComponent'
 
 export default function ManageVideos() {
   const dispatch = useDispatch()
@@ -13,6 +14,9 @@ export default function ManageVideos() {
   useEffect(() => {
     if (!videos.videosLoaded) dispatch(fetchVideosAsync())
   }, [dispatch, videos.videosLoaded])
+
+  if (!videos.videosLoaded)
+    return <LoadingComponent message="Loading videos..." />
 
   if (videos.videos.length === 0) return <h6>No video created.</h6>
 

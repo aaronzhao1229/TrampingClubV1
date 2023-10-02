@@ -65,6 +65,7 @@ export default function EditAlbumForm({ targetAlbum }) {
     //     resolve()
     //   }, 2000)
     // })
+    
 
     return dispatch(editAlbumAsync(editedAlbum))
       .then(() => {
