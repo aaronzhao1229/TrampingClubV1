@@ -26,12 +26,11 @@ export default function CreateVideo() {
   })
 
   const onSubmit = (values) => {
-    console.log(typeof setVideos)
     return agentPrivate.videos
       .createVideo(values)
       .then(() => {
         dispatch(setVideos())
-        navigate('/videos')
+        navigate('/manageVideos')
       })
       .catch((err) => console.error(err.message))
   }

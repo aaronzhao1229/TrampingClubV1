@@ -79,6 +79,9 @@ const programmes = {
 
 const videos = {
   createVideo: (newVideo) => requests.post('/videos/create', newVideo),
+  deleteVideo: (videoId) => requests.delete(`/videos/delete/${videoId}`),
+  editVideo: (editedVideo) =>
+    requests.patch(`/videos/edit/${editedVideo.videoId}`, editedVideo),
 }
 
 const agentPrivate = {

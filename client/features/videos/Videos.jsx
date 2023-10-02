@@ -10,8 +10,8 @@ export default function Videos() {
   const videos = useSelector((state) => state.videos)
 
   useEffect(() => {
-    dispatch(fetchVideosAsync())
-  }, [dispatch])
+    if (!videos.videosLoaded) dispatch(fetchVideosAsync())
+  }, [dispatch, videos.videosLoaded])
 
   return (
     <Container>

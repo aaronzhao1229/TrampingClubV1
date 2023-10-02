@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 import agent from '../../app/apis/agent'
+import agentPrivate from '../../app/apis/agentPrivate'
 
 const initialState = {
   status: 'idle',
@@ -13,6 +14,18 @@ export const fetchVideosAsync = createAsyncThunk(
   async (_, thunkApi) => {
     try {
       const response = await agent.videos.getVideos()
+      return response
+    } catch (error) {
+      return thunkApi.rejectWithValue({ error: error.message })
+    }
+  }
+)
+
+export const deleteVideoAsync = createAsyncThunk(
+  'videos/deleteVideosAsync',
+  async (videoId, thunkApi) => {
+    try {
+      const response = await agentPrivate.videos.deleteVideo(videoId)
       return response
     } catch (error) {
       return thunkApi.rejectWithValue({ error: error.message })
@@ -38,6 +51,19 @@ export const videoSlice = createSlice({
       state.videos = action.payload
     })
     builder.addCase(fetchVideosAsync.rejected, (state, action) => {
+      state.status = 'idle'
+      console.error(action.payload)
+    })
+    builder.addCase(deleteVideoAsync.pending, (state, action) => {
+      state.status = 'pendingDeleteVideo' + action.meta.arg
+    })
+    builder.addCase(deleteVideoAsync.fulfilled, (state, action) => {
+      state.videos = [...state.videos].filter(
+        (video) => video.videoId !== action.meta.arg
+      )
+      state.status = 'idle'
+    })
+    builder.addCase(deleteVideoAsync.rejected, (state, action) => {
       state.status = 'idle'
       console.error(action.payload)
     })
