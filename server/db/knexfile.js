@@ -12,7 +12,7 @@ module.exports = {
     connection: {
       host: 'localhost',
       user: 'aaronlaptop',
-      password: 'Lj090418%',
+      password: 'Lj04101982%',
       database: 'lambdaDB',
     },
     useNullAsDefault: true,
