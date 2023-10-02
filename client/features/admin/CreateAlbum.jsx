@@ -59,7 +59,7 @@ export default function CreateAlbum() {
   }
 
   return (
-    <Container className="my-4">
+    <Container className="my-4" style={{ marginTop: 50 }}>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group className="mb-3" controlId="formBasicName">
           <Form.Label>Trip Name</Form.Label>
@@ -118,6 +118,13 @@ export default function CreateAlbum() {
           )}
         </Button>
       </Form>
+      <Button
+        variant="secondary"
+        onClick={() => navigate('/admin')}
+        style={{ marginTop: 10 }}
+      >
+        Back to admin menu
+      </Button>
     </Container>
   )
 }

@@ -56,7 +56,7 @@ export default function CreateProgramme() {
           <Form.Label>Title</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Programme title (eg. Tramp programme from 04/09/2023 to 03/03/2023"
+            placeholder="Programme title (eg. Tramp programme from 04/09/2023 to 03/03/2023)"
             {...register('title', { required: 'Title is required' })}
           />
           {errors.title && (
@@ -113,6 +113,13 @@ export default function CreateProgramme() {
           )}
         </Button>
       </Form>
+      <Button
+        variant="secondary"
+        onClick={() => navigate('/admin')}
+        style={{ marginTop: 10 }}
+      >
+        Back to admin menu
+      </Button>
     </Container>
   )
 }

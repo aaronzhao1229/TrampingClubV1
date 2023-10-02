@@ -13,15 +13,22 @@ import {
 export default function Home() {
   const navigate = useNavigate()
   return (
-    <Container>
-      <p>
+    <Container style={{ marginTop: 50 }}>
+      <p className="text-justify">
         The Lambda Trampers and Lambda Latte Walkers are social tramping and
         walking groups for the LGBTQ+ community, and their friends, living in
         and around Christchurch. The Lambda Trampers go on day tramps of varying
         difficulty while the Lambda Latte Walkers go on shorter walks, generally
         2 to 3 hours, and usually have a coffee at the end.
       </p>
-      <Carousel style={{ marginBottom: 20, marginTop: 20 }}>
+      <Carousel
+        style={{
+          marginBottom: 20,
+          marginTop: 20,
+          marginLeft: 50,
+          marginRight: 50,
+        }}
+      >
         <Carousel.Item>
           <img
             className="d-block w-100"
@@ -44,12 +51,18 @@ export default function Home() {
           />
         </Carousel.Item>
       </Carousel>
-      <p>
+      <p className="text-justify">
         To join the Lambda Trampers or Latte walkers, join our Meetup group or
         message us by clicking on the icons below:
       </p>
-      <Row>
-        <Col>
+      <Row
+        className="text-justify"
+        style={{
+          marginLeft: 50,
+          marginRight: 50,
+        }}
+      >
+        <Col className="d-flex justify-content-center">
           <FontAwesomeIcon
             icon={faFacebook}
             size="2xl"
@@ -60,7 +73,7 @@ export default function Home() {
             data-testid="facebook-icon"
           />
         </Col>
-        <Col>
+        <Col className="d-flex justify-content-center">
           <FontAwesomeIcon
             icon={faInstagram}
             size="2xl"
@@ -70,7 +83,7 @@ export default function Home() {
             }
           />
         </Col>
-        <Col>
+        <Col className="d-flex justify-content-center">
           <FontAwesomeIcon
             icon={faMeetup}
             size="2xl"
@@ -82,7 +95,7 @@ export default function Home() {
             }
           />
         </Col>
-        <Col>
+        <Col className="d-flex justify-content-center">
           <FontAwesomeIcon
             icon={faMessage}
             size="2xl"

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Container } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
 export default function WalkProgramme() {
@@ -14,16 +15,16 @@ export default function WalkProgramme() {
   }
 
   return (
-    <>
-      <h1>{walkProgramme.title}</h1>
+    <Container style={{ marginTop: 50 }}>
+      <h4 className="text-justify">{walkProgramme.title}</h4>
       <object
         data={walkProgramme.fileUrl}
         type="application/pdf"
         width="100%"
-        style={{ height: 'calc(100vh - 43px)' }}
+        style={{ height: 'calc(100vh - 43px)', marginTop: 30 }}
         aria-label="This object displays an PDF file"
         data-testid="walk-pdf"
       />
-    </>
+    </Container>
   )
 }

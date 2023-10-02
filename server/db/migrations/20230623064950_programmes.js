@@ -7,6 +7,7 @@ exports.up = function (knex) {
     table.increments('programmeId')
     table.string('programmeCategory')
     table.string('fileName')
+    table.string('title')
   })
 }
 

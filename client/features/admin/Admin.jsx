@@ -3,7 +3,7 @@ import { Container, ListGroup } from 'react-bootstrap'
 
 export default function Admin() {
   return (
-    <Container className="mt-4">
+    <Container className="m-4">
       <ListGroup>
         <ListGroup.Item action href="/createAlbum">
           Create Album

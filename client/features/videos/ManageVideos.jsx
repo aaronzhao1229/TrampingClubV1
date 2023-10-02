@@ -17,7 +17,7 @@ export default function ManageVideos() {
   if (videos.videos.length === 0) return <h6>No video created.</h6>
 
   return (
-    <Container>
+    <Container style={{ marginTop: 50 }}>
       <Row xs={1} md={2} className="g-4">
         {[...videos.videos].reverse().map((video, i) => (
           <Col key={i}>
@@ -35,8 +35,8 @@ export default function ManageVideos() {
                 allowFullScreen
               ></iframe>
             </div>
-            <Row>
-              <Col>
+            <Row style={{ marginTop: 4 }}>
+              <Col className="d-flex justify-content-center">
                 <Button
                   onClick={() => navigate(`/editVideo/${video.videoId}`)}
                   variant="primary"
@@ -44,7 +44,7 @@ export default function ManageVideos() {
                   Edit
                 </Button>
               </Col>
-              <Col>
+              <Col className="d-flex justify-content-center">
                 <Button
                   variant="danger"
                   onClick={() => dispatch(deleteVideoAsync(video.videoId))}
@@ -66,6 +66,13 @@ export default function ManageVideos() {
           </Col>
         ))}
       </Row>
+      <Button
+        variant="secondary"
+        onClick={() => navigate('/admin')}
+        style={{ marginTop: 10 }}
+      >
+        Back to admin menu
+      </Button>
     </Container>
   )
 }

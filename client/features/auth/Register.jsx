@@ -44,7 +44,7 @@ export default function Register() {
     }
   }
   return (
-    <Container fluid style={{ marginTop: 10 }}>
+    <Container fluid style={{ marginTop: 50 }}>
       <Row>
         <Col sm={{ span: 6, offset: 3 }}>
           <Card>

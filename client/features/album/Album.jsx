@@ -19,7 +19,7 @@ export default function Album() {
   if (!album.albumLoaded) return <LoadingComponent />
 
   return (
-    <Container fluid>
+    <Container fluid style={{ marginTop: 50 }}>
       <Row xs={1} md={4} className="g-4">
         {album.album.map((trip) => (
           <Col key={trip.albumId}>

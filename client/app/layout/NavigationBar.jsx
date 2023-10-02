@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 export default function NavigationBar() {
-  const { username } = useSelector((state) => state.auth)
+  const { userRoles } = useSelector((state) => state.auth)
 
   const logout = useLogout()
   const navigate = useNavigate()
@@ -18,7 +18,7 @@ export default function NavigationBar() {
   return (
     <Navbar bg="primary" variant="dark" style={{ marginBottom: 20 }}>
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <img
             alt=""
             src="/img/logo.png"
@@ -26,7 +26,7 @@ export default function NavigationBar() {
             className="d-inline-block align-top"
           />
         </Navbar.Brand>
-        <Nav className="me-auto">
+        <Nav className="justify-content-end" variant="underline">
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/about">About</Nav.Link>
           <Nav.Link href="/tramp">Tramp</Nav.Link>
@@ -34,9 +34,7 @@ export default function NavigationBar() {
           <Nav.Link href="/album">Album</Nav.Link>
           <Nav.Link href="/videos">Videos</Nav.Link>
           <Nav.Link href="/contactus">Contact us</Nav.Link>
-          {username === null ? (
-            <Nav.Link href="/login">Login</Nav.Link>
-          ) : (
+          {userRoles && userRoles.includes('admin') && (
             <Button onClick={signout}>Logout</Button>
           )}
         </Nav>

@@ -58,7 +58,7 @@ export default function ContactUs() {
   }
 
   return (
-    <Container className="my-4">
+    <Container className="my-4" style={{ marginTop: 50 }}>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email</Form.Label>
