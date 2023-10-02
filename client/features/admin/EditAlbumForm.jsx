@@ -65,7 +65,6 @@ export default function EditAlbumForm({ targetAlbum }) {
     //     resolve()
     //   }, 2000)
     // })
-    
 
     return dispatch(editAlbumAsync(editedAlbum))
       .then(() => {
@@ -124,11 +123,11 @@ export default function EditAlbumForm({ targetAlbum }) {
         </Button>
       </Form>
       <Button
-        variant="secondary"
-        onClick={() => navigate('/admin')}
+        variant="dark"
+        onClick={() => navigate(`/addmorephotos/${targetAlbum.albumId}`)}
         style={{ marginTop: 10 }}
       >
-        Back to admin menu
+        Add more photos
       </Button>
     </Container>
   )

@@ -66,6 +66,8 @@ const album = {
   editAlbum: (editedAlbum) =>
     requests.patch(`/album/editAlbum/${editedAlbum.albumId}`, editedAlbum),
   createAlbum: (newAlbum) => requests.postForm('/album/uploadImage', newAlbum),
+  addMorePhotos: (albumId, photos) =>
+    requests.postForm(`/album/addMorePhotos/${albumId}`, photos),
   deletePhotoByPhotoId: (photoId) =>
     requests.delete(`/album/deletePhoto/${photoId}`),
   deleteAlbumByAlbumId: (albumId) =>

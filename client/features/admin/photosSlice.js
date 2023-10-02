@@ -37,7 +37,11 @@ export const removePhotoAsync = createAsyncThunk(
 export const photosSlice = createSlice({
   name: 'photos',
   initialState,
-  reducers: {},
+  reducers: {
+    setPhotos: (state) => {
+      state.photosLoaded = false
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchPhotosAsync.pending, (state) => {
       state.status = 'pendingFetchPhotos'
@@ -67,4 +71,4 @@ export const photosSlice = createSlice({
   },
 })
 
-export const { removePhoto } = photosSlice.actions
+export const { removePhoto, setPhotos } = photosSlice.actions
