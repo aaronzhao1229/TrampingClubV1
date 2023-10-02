@@ -31,14 +31,17 @@ module.exports = {
 
   // to be updated
   production: {
-    client: 'postgresql',
-    connection: process.env.DATABASE_URL,
+    client: 'mysql2',
+    connection: {
+      host: 'localhost',
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE,
+    },
     pool: {
       min: 2,
       max: 10,
     },
-    migrations: {
-      tableName: 'knex_migrations',
-    },
+    useNullAsDefault: true,
   },
 }
