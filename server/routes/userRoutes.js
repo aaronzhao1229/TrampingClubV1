@@ -120,7 +120,6 @@ router.get('/refresh', async (req, res) => {
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
     async (err, decoded) => {
-      console.log('hey')
       if (err || foundUser.username !== decoded.username)
         return res.sendStatus(403)
       const username = decoded.username

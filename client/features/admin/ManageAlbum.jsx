@@ -10,8 +10,8 @@ export default function ManageAlbum() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(fetchAlbumAsync())
-  }, [])
+    if (!album.albumLoaded) dispatch(fetchAlbumAsync())
+  }, [album.albumLoaded, dispatch])
   if (album.album.length === 0) return <h6>No Album created.</h6>
   return (
     <Container fluid>

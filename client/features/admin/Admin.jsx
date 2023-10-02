@@ -14,6 +14,12 @@ export default function Admin() {
         <ListGroup.Item action href="/updateProgramme">
           Update Programme
         </ListGroup.Item>
+        <ListGroup.Item action href="/createVideo">
+          Create Video
+        </ListGroup.Item>
+        <ListGroup.Item action href="/manageVideos">
+          Manage Videos
+        </ListGroup.Item>
       </ListGroup>
     </Container>
   )

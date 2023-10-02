@@ -1,5 +1,6 @@
 const express = require('express')
-const multer = require('multer')
+// const multer = require('multer')
+const upload = require('../middleware/multer')
 const verifyJWT = require('../middleware/verifyJWT')
 const verifyRoles = require('../middleware/verifyRoles')
 const crypto = require('crypto')
@@ -10,8 +11,9 @@ const router = express.Router()
 
 const randomImageName = (bites = 32) =>
   crypto.randomBytes(bites).toString('hex')
-const storage = multer.memoryStorage() //create a memory storage
-const upload = multer({ storage: storage })
+
+// const storage = multer.memoryStorage() //create a memory storage
+// const upload = multer({ storage: storage })
 
 router.post(
   '/uploadImage',
@@ -34,7 +36,7 @@ router.post(
         res.json(result)
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err.message)
         res.status(500).json({ message: 'Something went wrong' })
       })
   }

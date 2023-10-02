@@ -18,6 +18,10 @@ import PersistLogin from '../components/PersistLogin'
 import Admin from '../../features/admin/Admin'
 import Register from '../../features/auth/Register'
 import ResetPassword from '../../features/auth/ResetPassword'
+import Videos from '../../features/videos/Videos'
+import CreateVideo from '../../features/videos/CreateVideo'
+import ManageVideos from '../../features/videos/ManageVideos'
+import EditVideo from '../../features/videos/EditVideo'
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +39,9 @@ export const router = createBrowserRouter([
               { path: 'createAlbum', element: <CreateAlbum /> },
               { path: 'updateProgramme', element: <CreateProgramme /> },
               { path: 'manageAlbum/:albumId', element: <ManageSingleAlbum /> },
+              { path: 'createVideo', element: <CreateVideo /> },
+              { path: 'manageVideos', element: <ManageVideos /> },
+              { path: 'editVideo/:videoId', element: <EditVideo /> },
             ],
           },
         ],
@@ -44,6 +51,7 @@ export const router = createBrowserRouter([
       { path: 'walk', element: <WalkProgramme /> },
       { path: 'album', element: <Album /> },
       { path: 'album/:albumId', element: <SingleAlbum /> },
+      { path: 'videos', element: <Videos /> },
       { path: 'contactus', element: <ContactUs /> },
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },

@@ -3,22 +3,19 @@ const server = require('../../server')
 const db = require('../../db/userDb')
 const bcrypt = require('bcrypt')
 const { sendEmailForgetPassword } = require('../../ses')
+const jwt = require('jsonwebtoken')
 
 jest.mock('../../db/userDb')
 jest.spyOn(console, 'error')
 jest.mock('bcrypt')
 jest.mock('../../ses')
 
-// to be updated
-// jest.mock('jsonwebtoken', () => ({
-//   ...jest.requireActual('jsonwebtoken'), // import and retain the original functionalities
-//   verify: jest.fn((token, secretOrPublicKey, options, callback) => {
-//     return callback(null, { sub: 'user_id' })
-//   }), // overwrite verify
-// }))
-
-// const verify = jest.spyOn(jwt, 'verify')
-// verify.mockImplementation(() => () => ({ verified: 'true' }))
+jest.mock('jsonwebtoken', () => ({
+  ...jest.requireActual('jsonwebtoken'), // import and retain the original functionalities
+  verify: jest.fn((token, secretOrPublicKey, callback) => {
+    return callback(null, { username: 'existing2' })
+  }), // overwrite verify
+}))
 
 afterEach(() => {
   console.error.mockReset()
@@ -189,18 +186,37 @@ describe('/refresh', () => {
       })
   })
 
-  // it('verify sucessfully', () => {
-  //   const np = jest.fn()
-  //   db.getUsers.mockReturnValue(existingFakeUsers)
-  //   jwt.verify.mockImplementation(Promise.resolve(np))
-  //   db.getUserRolesByUserId.mockReturnValue(existingFakeRoles)
-  //   return request(server)
-  //     .get('/api/v1/user/refresh')
-  //     .set('Cookie', ['jwt=abcdef'])
-  //     .then(() => {
-  //       expect(0).toBe(0)
-  //     })
-  // })
+  it('verify sucessfully', () => {
+    db.getUsers.mockReturnValue(existingFakeUsers)
+
+    jwt.verify.mockImplementation((token, secretOrPublicKey, callback) => {
+      // Simulate a successful verification by calling the callback with null for the error and some user data
+      callback(null, { username: 'existing2' })
+    })
+    db.getUserRolesByUserId.mockReturnValue(existingFakeRoles)
+    return request(server)
+      .get('/api/v1/user/refresh')
+      .set('Cookie', ['jwt=ghijkl'])
+      .then((res) => {
+        expect(res.status).toBe(200)
+      })
+  })
+
+  it('verify failure', () => {
+    db.getUsers.mockReturnValue(existingFakeUsers)
+
+    jwt.verify.mockImplementation((token, secretOrPublicKey, callback) => {
+      // Simulate a wrong username
+      callback(null, { username: 'random' })
+    })
+    db.getUserRolesByUserId.mockReturnValue(existingFakeRoles)
+    return request(server)
+      .get('/api/v1/user/refresh')
+      .set('Cookie', ['jwt=ghijkl'])
+      .then((res) => {
+        expect(res.status).toBe(403)
+      })
+  })
 })
 
 describe('/logout', () => {
@@ -247,6 +263,19 @@ describe('forget password', () => {
       .then((res) => {
         expect(res.status).toBe(200)
         expect(res.text).toBe('Email sent')
+      })
+  })
+  it('forget password error', () => {
+    db.getUserByEmail.mockReturnValue({ id: 1, usename: 'test1234' })
+    db.saveResetPasswordToken.mockImplementation(() =>
+      Promise.reject(new Error('Error'))
+    )
+    console.error.mockImplementation(() => {})
+    return request(server)
+      .post('/api/v1/user/forgetPassword')
+      .then((res) => {
+        expect(res.status).toBe(500)
+        expect(console.error).toHaveBeenCalledWith('Error')
       })
   })
 })

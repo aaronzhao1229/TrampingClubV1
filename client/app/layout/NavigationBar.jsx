@@ -32,6 +32,7 @@ export default function NavigationBar() {
           <Nav.Link href="/tramp">Tramp</Nav.Link>
           <Nav.Link href="/walk">Walk</Nav.Link>
           <Nav.Link href="/album">Album</Nav.Link>
+          <Nav.Link href="/videos">Videos</Nav.Link>
           <Nav.Link href="/contactus">Contact us</Nav.Link>
           {username === null ? (
             <Nav.Link href="/login">Login</Nav.Link>

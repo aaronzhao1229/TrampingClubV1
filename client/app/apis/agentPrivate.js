@@ -77,9 +77,16 @@ const programmes = {
     requests.postForm('/programme/updateProgramme', newProgramme),
 }
 
+const videos = {
+  createVideo: (newVideo) => requests.post('/videos/create', newVideo),
+  deleteVideo: (videoId) => requests.delete(`/videos/delete/${videoId}`),
+  editVideo: (editedVideo) =>
+    requests.patch(`/videos/edit/${editedVideo.videoId}`, editedVideo),
+}
+
 const agentPrivate = {
   album,
-
+  videos,
   programmes,
 }
 

@@ -42,11 +42,16 @@ const contact = {
   contactUs: (message) => requests.post('/ses/sendEmail', message),
 }
 
+const videos = {
+  getVideos: () => requests.get('/videos'),
+}
+
 const agent = {
   programmes,
   auth,
   contact,
   album,
+  videos,
 }
 
 export default agent
