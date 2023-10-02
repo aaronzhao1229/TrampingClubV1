@@ -6,6 +6,7 @@ server/public/bundle.js.map
 server/public/styles.css
 server/public/styles.css.map
 .env
+production.env
 tags
 coverage/*
 private_key.pem
