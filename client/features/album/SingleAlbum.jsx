@@ -15,7 +15,7 @@ export default function SingleAlbum() {
   }, [dispatch])
 
   return (
-    <Container fluid>
+    <Container fluid style={{ marginTop: 50 }}>
       <Row xs={1} md={4} className="g-4">
         {photos.photos.map((photo, i) => (
           <Col key={i}>

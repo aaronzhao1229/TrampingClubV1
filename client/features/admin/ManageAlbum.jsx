@@ -14,7 +14,7 @@ export default function ManageAlbum() {
   }, [album.albumLoaded, dispatch])
   if (album.album.length === 0) return <h6>No Album created.</h6>
   return (
-    <Container fluid>
+    <Container fluid style={{ marginTop: 50 }}>
       <Row xs={1} md={4} className="g-4">
         {album.album.map((trip) => (
           <Col key={trip.albumId}>
@@ -60,6 +60,13 @@ export default function ManageAlbum() {
           </Col>
         ))}
       </Row>
+      <Button
+        variant="secondary"
+        onClick={() => navigate('/admin')}
+        style={{ marginTop: 10 }}
+      >
+        Back to admin menu
+      </Button>
     </Container>
   )
 }

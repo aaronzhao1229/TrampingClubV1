@@ -68,7 +68,7 @@ export default function EditVideo() {
   }
 
   return (
-    <Container className="my-4">
+    <Container className="my-4" style={{ marginTop: 50 }}>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group className="mb-3" controlId="videoTitle">
           <Form.Label>Video Title</Form.Label>
@@ -122,6 +122,13 @@ export default function EditVideo() {
           )}
         </Button>
       </Form>
+      <Button
+        variant="secondary"
+        onClick={() => navigate('/admin')}
+        style={{ marginTop: 10 }}
+      >
+        Back to admin menu
+      </Button>
     </Container>
   )
 }

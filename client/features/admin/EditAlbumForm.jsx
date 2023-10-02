@@ -5,10 +5,12 @@ import Button from 'react-bootstrap/Button'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { editAlbumAsync } from './albumSlice'
 import { convertDateForDatePicker } from '../../app/utils/utils'
 
 export default function EditAlbumForm({ targetAlbum }) {
+  const navigate = useNavigate()
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const initState = {
     email: '',
@@ -63,7 +65,7 @@ export default function EditAlbumForm({ targetAlbum }) {
     //     resolve()
     //   }, 2000)
     // })
-    
+
     return dispatch(editAlbumAsync(editedAlbum))
       .then(() => {
         toast.success('Album info has been saved.')
@@ -73,7 +75,7 @@ export default function EditAlbumForm({ targetAlbum }) {
   }
 
   return (
-    <Container className="my-4">
+    <Container className="my-4" style={{ marginTop: 50 }}>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group className="mb-3" controlId="formBasicName">
           <Form.Label>Trip Name</Form.Label>
@@ -120,6 +122,13 @@ export default function EditAlbumForm({ targetAlbum }) {
           )}
         </Button>
       </Form>
+      <Button
+        variant="secondary"
+        onClick={() => navigate('/admin')}
+        style={{ marginTop: 10 }}
+      >
+        Back to admin menu
+      </Button>
     </Container>
   )
 }
