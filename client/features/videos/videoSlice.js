@@ -33,6 +33,18 @@ export const deleteVideoAsync = createAsyncThunk(
   }
 )
 
+export const editVideoAsync = createAsyncThunk(
+  'videos/editVideoAsync',
+  async (editedVideo, thunkApi) => {
+    try {
+      const response = await agentPrivate.videos.editVideo(editedVideo)
+      return response
+    } catch (error) {
+      return thunkApi.rejectWithValue({ error: error.message })
+    }
+  }
+)
+
 export const videoSlice = createSlice({
   name: 'videos',
   initialState,
@@ -64,6 +76,17 @@ export const videoSlice = createSlice({
       state.status = 'idle'
     })
     builder.addCase(deleteVideoAsync.rejected, (state, action) => {
+      state.status = 'idle'
+      console.error(action.payload)
+    })
+    builder.addCase(editVideoAsync.pending, (state, action) => {
+      state.status = 'pendingEditVideo' + action.meta.arg.videoId
+    })
+    builder.addCase(editVideoAsync.fulfilled, (state, action) => {
+      state.status = 'idle'
+      state.videosLoaded = false
+    })
+    builder.addCase(editVideoAsync.rejected, (state, action) => {
       state.status = 'idle'
       console.error(action.payload)
     })

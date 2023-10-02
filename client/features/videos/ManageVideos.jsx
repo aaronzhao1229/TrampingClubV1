@@ -38,7 +38,7 @@ export default function ManageVideos() {
             <Row>
               <Col>
                 <Button
-                  onClick={() => navigate(`/manageVideo/${video.videoId}`)}
+                  onClick={() => navigate(`/editVideo/${video.videoId}`)}
                   variant="primary"
                 >
                   Edit
