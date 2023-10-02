@@ -3,18 +3,18 @@ const path = require('path')
 module.exports = {
   development: {
     client: 'mysql2',
-    connection: {
-      host: 'localhost',
-      user: 'root',
-      password: 'test1234!',
-      database: 'test',
-    },
     // connection: {
     //   host: 'localhost',
-    //   user: 'aaronlaptop',
-    //   password: 'Lj04101982%',
-    //   database: 'lambdaDB',
+    //   user: 'root',
+    //   password: 'test1234!',
+    //   database: 'test',
     // },
+    connection: {
+      host: 'localhost',
+      user: 'aaronlaptop',
+      password: 'Lj04101982%',
+      database: 'lambdaDB',
+    },
     useNullAsDefault: true,
   },
 
