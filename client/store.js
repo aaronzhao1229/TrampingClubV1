@@ -20,7 +20,7 @@ const store = configureStore({
     auth: authSlice.reducer,
     videos: videoSlice.reducer,
   },
-  // devTools: false,
+  devTools: false,
 })
 
 export default store
