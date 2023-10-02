@@ -27,6 +27,14 @@ async function createPhotos(newAlbum, imageNames, db = connection) {
   return db('photos').insert(namesToInsert)
 }
 
+function addMorePhotos(albumId, imageNames, db = connection) {
+  const namesToInsert = imageNames.map((imageName) => ({
+    photoName: imageName,
+    albumId: albumId,
+  }))
+  return db('photos').insert(namesToInsert)
+}
+
 function getPhotosByAlbumId(albumId, db = connection) {
   return db('photos').select('photoId', 'photoName').where('albumId', albumId)
 }
@@ -56,6 +64,7 @@ function editAlbum(editedAlbum, db = connection) {
 module.exports = {
   getAlbum,
   createPhotos,
+  addMorePhotos,
   getPhotosByAlbumId,
   getPhotoByPhotoId,
   deletePhotoByPhotoId,
