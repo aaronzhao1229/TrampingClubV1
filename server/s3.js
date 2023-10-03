@@ -68,17 +68,23 @@ async function getImageFromS3(imageName) {
     privateKey: process.env.CLOUDFRONT_PRIVATE_KEY,
     keyPairId: process.env.CLOUDFRONT_KEY_PAIR_ID,
   })
+
   return url
 }
 
 async function deleteImageFromS3(imageName) {
   // delete image from s3
+ 
   const params = {
     Bucket: bucketName,
     Key: imageName,
   }
   const command = new DeleteObjectCommand(params)
-  await s3.send(command)
+  try {
+    await s3.send(command)
+  } catch (error) {
+    console.error(error)
+  }
   // Invalidate the cloudFront cache for that image
 
   const invalidateParams = {
