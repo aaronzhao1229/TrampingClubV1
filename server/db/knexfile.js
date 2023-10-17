@@ -1,14 +1,9 @@
 const path = require('path')
+require('dotenv').config()
 
 module.exports = {
   development: {
     client: 'mysql2',
-    // connection: {
-    //   host: 'localhost',
-    //   user: 'root',
-    //   password: 'test1234!',
-    //   database: 'test',
-    // },
     connection: {
       host: 'localhost',
       user: process.env.MYSQL_USER,

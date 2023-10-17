@@ -1,4 +1,4 @@
-import { Container, Nav, Navbar, Button } from 'react-bootstrap'
+import { Container, Nav, Navbar, Button, Offcanvas } from 'react-bootstrap'
 
 import React from 'react'
 import useLogout from '../hooks/useLogout'
@@ -16,7 +16,13 @@ export default function NavigationBar() {
     navigate('/')
   }
   return (
-    <Navbar bg="primary" variant="dark" style={{ marginBottom: 20 }}>
+    <Navbar
+      bg="primary"
+      variant="dark"
+      collapseOnSelect
+      expand="lg"
+      style={{ marginBottom: 20 }}
+    >
       <Container>
         <Navbar.Brand href="/">
           <img
@@ -26,18 +32,35 @@ export default function NavigationBar() {
             className="d-inline-block align-top"
           />
         </Navbar.Brand>
-        <Nav className="justify-content-end" variant="underline">
-          <Nav.Link href="/">Home</Nav.Link>
-          <Nav.Link href="/about">About</Nav.Link>
-          <Nav.Link href="/tramp">Tramp</Nav.Link>
-          <Nav.Link href="/walk">Walk</Nav.Link>
-          <Nav.Link href="/album">Album</Nav.Link>
-          <Nav.Link href="/videos">Videos</Nav.Link>
-          <Nav.Link href="/contactus">Contact us</Nav.Link>
-          {userRoles && userRoles.includes('admin') && (
-            <Button onClick={signout}>Logout</Button>
-          )}
-        </Nav>
+        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
+        <Navbar.Offcanvas
+          id={`offcanvasNavbar-expand-lg`}
+          aria-labelledby={`offcanvasNavbarLabel-expand-lg`}
+          placement="end"
+        >
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
+              Lambda Trampers & Latte Walkers
+            </Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <Nav
+              className="justify-content-end flex-grow-1 pe-3"
+              variant="underline"
+            >
+              <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link href="/about">About</Nav.Link>
+              <Nav.Link href="/tramp">Tramp</Nav.Link>
+              <Nav.Link href="/walk">Walk</Nav.Link>
+              <Nav.Link href="/album">Album</Nav.Link>
+              <Nav.Link href="/videos">Videos</Nav.Link>
+              <Nav.Link href="/contactus">Contact us</Nav.Link>
+              {userRoles && userRoles.includes('admin') && (
+                <Button onClick={signout}>Logout</Button>
+              )}
+            </Nav>
+          </Offcanvas.Body>
+        </Navbar.Offcanvas>
       </Container>
     </Navbar>
   )
